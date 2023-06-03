@@ -12,4 +12,8 @@ export namespace DomainErrors {
     export const MissingUnitAddress = 'Unit address is missing'
   }
 
+  export namespace UserErrors {
+    export const MissingUsername = 'Username is missing'
+  }
+
 }

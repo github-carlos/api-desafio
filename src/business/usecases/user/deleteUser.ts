@@ -1,27 +1,27 @@
 import { Debugger, debug } from 'debug'
-import { CompanyDto } from "@business/dtos";
-import { CompanyRepository } from "@business/repositories";
+import { UserDto } from "@business/dtos";
+import { UserRepository } from "@business/repositories";
 import { UseCase } from "../usecase.interface";
 import { BusinessErrors } from '@business/errors';
 
-export interface DeleteCompanyUseCaseInput {
+export interface DeleteUserUseCaseInput {
   id: string
 }
 
-export class DeleteCompanyUseCase implements UseCase<DeleteCompanyUseCaseInput, Promise<boolean>> {
+export class DeleteUserUseCase implements UseCase<DeleteUserUseCaseInput, Promise<boolean>> {
 
   private debug: Debugger
   
-  constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(DeleteCompanyUseCase.name)
+  constructor(private UserRepository: UserRepository) {
+    this.debug = debug(DeleteUserUseCase.name)
   }
 
-  async run(input: DeleteCompanyUseCaseInput): Promise<boolean> {
+  async run(input: DeleteUserUseCaseInput): Promise<boolean> {
     this.debug('Started', input)
 
-    const deletedCompany = await this.companyRepository.delete(input.id)
+    const deletedUser = await this.UserRepository.delete(input.id)
 
     this.debug('Finished')
-    return deletedCompany
+    return deletedUser
   }
 }

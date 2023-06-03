@@ -44,27 +44,27 @@ export class Machine {
 
   private validate(params: MachineParams) {
     if (!params.unitId) {
-      throw DomainErrors.CommonErrors.MissingUnitId
+      throw new DomainErrors.CommonErrors.MissingUnitId()
     }
 
     if (!params.name) {
-      throw DomainErrors.MachineErrors.MissingMachineName
+      throw new DomainErrors.MachineErrors.MissingMachineName()
     }
 
     if (!params.model) {
-      throw DomainErrors.MachineErrors.MissingMachineModel
+      throw new DomainErrors.MachineErrors.MissingMachineModel()
     }
 
     if (params.status && !this.hasValidStatus(params.status)) {
-      throw DomainErrors.MachineErrors.InvalidStatus
+      throw new DomainErrors.MachineErrors.InvalidStatus()
     }
 
     if (params.health && params.health < 0) {
-      throw DomainErrors.MachineErrors.NegativeHealth
+      throw new DomainErrors.MachineErrors.NegativeHealth()
     }
 
     if (params.health && params.health > 100) {
-      throw DomainErrors.MachineErrors.ExceedHealth
+      throw new DomainErrors.MachineErrors.ExceedHealth()
     }
   }
 

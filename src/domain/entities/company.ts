@@ -13,7 +13,7 @@ export class Company {
 
   private validate() {
     if (!this.name) {
-      throw DomainErrors.CompanyErrors.MissingCompanyName
+      throw new DomainErrors.CompanyErrors.MissingCompanyName()
     }
   }
 }

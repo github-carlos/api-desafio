@@ -13,11 +13,11 @@ export class User {
 
   private validate() {
     if (!this.companyId) {
-      throw DomainErrors.CommonErrors.MissingCompanyId
+      throw new DomainErrors.CommonErrors.MissingCompanyId()
     }
 
     if (!this.username) {
-      throw DomainErrors.UserErrors.MissingUsername
+      throw new DomainErrors.UserErrors.MissingUsername()
     }
   }
 }

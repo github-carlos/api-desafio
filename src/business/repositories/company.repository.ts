@@ -5,4 +5,5 @@ export interface CompanyRepository {
   getOne(id: string): Promise<Company | null>
   getAll(): Promise<Array<Company>>
   delete(id: string): Promise<boolean>
+  update(id: string, data: Partial<Company>): Promise<Company>
 }

@@ -12,6 +12,11 @@ describe("#CreateCompanyUseCase", () => {
   const companyRepository = buildCompanyRepositoryMock()
   const usecase = new CreateCompanyUseCase(companyRepository)
 
+  test('should call save repository with correct params', async () => {
+    const newCompany = await usecase.run(input)
+    expect(companyRepository.save).toBeCalledWith({name: input.name, description: input.description, id: expect.any(String)})
+  })
+
   test('should create company with success', async () => {
     const newCompany = await usecase.run(input)
     expect(newCompany.name).toBe(input.name)

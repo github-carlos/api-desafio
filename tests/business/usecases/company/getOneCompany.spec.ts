@@ -19,6 +19,12 @@ describe("#GetOneCompanyUseCase", () => {
     jest.clearAllMocks()
   })
 
+  test('should call repository with correct params', async () => {
+    companyRepository.getOne.mockResolvedValueOnce(fixtureCompany)
+    await usecase.run(input)
+    expect(companyRepository.getOne).toBeCalledWith(input.id)
+  })
+
   test('should get one company with success', async () => {
     companyRepository.getOne.mockResolvedValueOnce(fixtureCompany)
     const company = await usecase.run(input)

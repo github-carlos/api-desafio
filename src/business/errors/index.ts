@@ -10,4 +10,12 @@ export namespace BusinessErrors {
 
   }
 
+  export namespace UserErrors {
+
+    export class UserNotFoundError implements BusinessError {
+      constructor(public name = UserNotFoundError.name, public message = 'User not found') {}
+    }
+
+  }
+
 }

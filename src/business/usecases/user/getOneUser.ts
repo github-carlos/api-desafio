@@ -1,31 +1,31 @@
 import { Debugger, debug } from 'debug'
-import { CompanyDto } from "@business/dtos";
-import { CompanyRepository } from "@business/repositories";
+import { UserDto } from "@business/dtos";
+import { UserRepository } from "@business/repositories";
 import { UseCase } from "../usecase.interface";
 import { BusinessErrors } from '@business/errors';
 
-export interface GetOneCompanyUseCaseInput {
+export interface GetOneUserUseCaseInput {
   id: string
 }
 
-export class GetOneCompanyUseCase implements UseCase<GetOneCompanyUseCaseInput, Promise<CompanyDto>> {
+export class GetOneUserUseCase implements UseCase<GetOneUserUseCaseInput, Promise<UserDto>> {
 
   private debug: Debugger
   
-  constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(GetOneCompanyUseCase.name)
+  constructor(private UserRepository: UserRepository) {
+    this.debug = debug(GetOneUserUseCase.name)
   }
 
-  async run(input: GetOneCompanyUseCaseInput): Promise<CompanyDto> {
+  async run(input: GetOneUserUseCaseInput): Promise<UserDto> {
     this.debug('Started', input)
 
-    const company = await this.companyRepository.getOne(input.id)
+    const User = await this.UserRepository.getOne(input.id)
 
-    if (!company) {
-      throw new BusinessErrors.CompanyErrors.CompanyNotFoundError()
+    if (!User) {
+      throw new BusinessErrors.UserErrors.UserNotFoundError()
     }
 
     this.debug('Finished')
-    return CompanyDto.fromEntity(company)
+    return UserDto.fromEntity(User)
   }
 }

@@ -32,5 +32,4 @@ describe("#GetOneCompanyUseCase", () => {
     companyRepository.getOne.mockResolvedValueOnce(null)
     await expect(usecase.run(input)).rejects.toStrictEqual(new BusinessErrors.CompanyErrors.CompanyNotFoundError())
   })
-
 })

@@ -7,26 +7,26 @@ describe("#DeleteUserUseCase", () => {
     id: '123abc'
   }
 
-  const UserRepository = buildUserRepositoryMock()
-  const usecase = new DeleteUserUseCase(UserRepository)
+  const userRepository = buildUserRepositoryMock()
+  const usecase = new DeleteUserUseCase(userRepository)
 
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
   test('should return true when delete a User with success', async () => {
-    UserRepository.delete.mockResolvedValueOnce(true)
+    userRepository.delete.mockResolvedValueOnce(true)
     const deletedUser = await usecase.run(input)
     
     expect(deletedUser).toBeTruthy()
-    expect(UserRepository.delete).toBeCalledWith(input.id)
+    expect(userRepository.delete).toBeCalledWith(input.id)
   })
 
   test('should return false when delete a User fails', async () => {
-    UserRepository.delete.mockResolvedValueOnce(false)
+    userRepository.delete.mockResolvedValueOnce(false)
     const deletedUser = await usecase.run(input)
     
     expect(deletedUser).toBeFalsy()
-    expect(UserRepository.delete).toBeCalledWith(input.id)
+    expect(userRepository.delete).toBeCalledWith(input.id)
   })
 })

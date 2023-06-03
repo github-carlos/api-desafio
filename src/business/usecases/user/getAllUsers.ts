@@ -1,24 +1,22 @@
 import { Debugger, debug } from 'debug'
-import { CompanyDto } from "@business/dtos";
-import { CompanyRepository } from "@business/repositories";
+import { UserDto } from "@business/dtos";
+import { UserRepository } from "@business/repositories";
 import { UseCase } from "../usecase.interface";
-import { Company } from '@domain/entities';
-import { BusinessErrors } from '@business/errors';
 
-export class GetAllCompanyUseCase implements UseCase<null, Promise<Array<CompanyDto>>> {
+export class GetAllUserUseCase implements UseCase<null, Promise<Array<UserDto>>> {
 
   private debug: Debugger
   
-  constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(GetAllCompanyUseCase.name)
+  constructor(private UserRepository: UserRepository) {
+    this.debug = debug(GetAllUserUseCase.name)
   }
 
-  async run(): Promise<Array<CompanyDto>> {
+  async run(): Promise<Array<UserDto>> {
     this.debug('Started')
 
-    const companies = await this.companyRepository.getAll()
+    const companies = await this.UserRepository.getAll()
 
     this.debug('Finished')
-    return companies.map((company) => CompanyDto.fromEntity(company))
+    return companies.map((User) => UserDto.fromEntity(User))
   }
 }

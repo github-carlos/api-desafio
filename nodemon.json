@@ -1,5 +1,5 @@
 {
-  "watch": ["app.ts", "src/**/*.ts"],
-  "ignore": ["test"],
-  "exec": "ts-node  ./app.ts"
+  "watch": ["server.ts", "src/**/*.ts"],
+  "ignore": ["tests"],
+  "exec": "ts-node -r tsconfig-paths/register ./server.ts"
 }

@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": false,
   "scripts": {
-    "build": "tsc",
-    "start:dev": "nodemon app",
-    "start": "node ./dist/app.js",
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s .",
+    "start:dev": "nodemon server",
+    "start": "node ./dist/server.js",
     "test": "npx jest"
   },
   "dependencies": {
@@ -26,6 +26,8 @@
     "nodemon": "^2.0.22",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "tscpaths": "^0.0.9",
     "typescript": "^5.1.3"
   }
 }

@@ -5,9 +5,15 @@
     "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["src/domain/*"],
+      "@business/*": ["src/business/*"],
+      "@infra/*": ["src/infra/*"]
+    }
   },
-  "include": ["app.ts", "src"],
+  "include": ["server.ts", "src"],
   "exclude": ["dist"],
   "lib": ["es2015"]
 }

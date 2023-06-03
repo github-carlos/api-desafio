@@ -5,16 +5,20 @@ import { DomainErrors } from "@domain/errors";
 export class Unit {
   constructor(public companyId: string, public address: Address, public id?: string) {
 
-    if (!companyId) {
-      throw DomainErrors.CommonErrors.MissingCompanyId
-    }
-
-    if (!address) {
-      throw DomainErrors.UnitErrors.MissingUnitAddress
-    }
+    this.validate()
 
     if (!this.id) {
       this.id = v4()
+    }
+  }
+
+  private validate() {
+    if (!this.companyId) {
+      throw DomainErrors.CommonErrors.MissingCompanyId
+    }
+
+    if (!this.address) {
+      throw DomainErrors.UnitErrors.MissingUnitAddress
     }
   }
 }

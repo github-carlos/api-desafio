@@ -1,35 +1,35 @@
 import { Debugger, debug } from 'debug'
-import { CompanyDto } from "@business/dtos";
-import { CompanyRepository } from "@business/repositories";
+import { UserDto } from "@business/dtos";
+import { UserRepository } from "@business/repositories";
 import { UseCase } from "../usecase.interface";
-import { Company } from '@domain/entities';
+import { User } from '@domain/entities';
 import { BusinessErrors } from '@business/errors';
 
-export interface UpdateCompanyUseCaseInput {
+export interface UpdateUserUseCaseInput {
   id: string,
-  data: Partial<Company>
+  data: Partial<User>
 }
 
-export class UpdateCompanyUseCase implements UseCase<UpdateCompanyUseCaseInput, Promise<CompanyDto>> {
+export class UpdateUserUseCase implements UseCase<UpdateUserUseCaseInput, Promise<UserDto>> {
 
   private debug: Debugger
   
-  constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(UpdateCompanyUseCase.name)
+  constructor(private UserRepository: UserRepository) {
+    this.debug = debug(UpdateUserUseCase.name)
   }
 
-  async run(input: UpdateCompanyUseCaseInput): Promise<CompanyDto> {
+  async run(input: UpdateUserUseCaseInput): Promise<UserDto> {
     this.debug('Started', input)
 
-    const company = await this.companyRepository.getOne(input.id)
+    const User = await this.UserRepository.getOne(input.id)
 
-    if (!company) {
-      throw new BusinessErrors.CompanyErrors.CompanyNotFoundError
+    if (!User) {
+      throw new BusinessErrors.UserErrors.UserNotFoundError
     }
 
-    const updatedCompany = await this.companyRepository.update(input.id, input.data)
+    const updatedUser = await this.UserRepository.update(input.id, input.data)
 
     this.debug('Finished')
-    return CompanyDto.fromEntity(updatedCompany)
+    return UserDto.fromEntity(updatedUser)
   }
 }

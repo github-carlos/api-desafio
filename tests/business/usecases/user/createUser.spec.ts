@@ -1,6 +1,6 @@
 import { CreateUserUseCase, CreateUserUseCaseInput } from '../../../../src/business/usecases/user'
 import { UserDto } from '../../../../src/business/dtos'
-import { buildUserRepositoryMock } from '../../../mocks/repositories/userRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 
 describe("#CreateUserUseCase", () => {
 
@@ -9,7 +9,7 @@ describe("#CreateUserUseCase", () => {
     companyId: '123abc'
   }
 
-  const UserRepository = buildUserRepositoryMock()
+  const UserRepository = buildDefaultRepositoryMock()
   const usecase = new CreateUserUseCase(UserRepository)
 
   test('should call save repository with correct params', async () => {

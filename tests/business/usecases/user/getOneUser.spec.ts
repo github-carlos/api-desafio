@@ -1,6 +1,6 @@
 import { GetOneUserUseCase, GetOneUserUseCaseInput } from '../../../../src/business/usecases/user'
 import { UserDto } from '../../../../src/business/dtos'
-import { buildUserRepositoryMock } from '../../../mocks/repositories/userRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 import { buildUserFixture } from '../../../fixtures'
 import { BusinessErrors } from '../../../../src/business/errors'
 
@@ -12,7 +12,7 @@ describe("#GetOneUserUseCase", () => {
 
   const fixtureUser = buildUserFixture()
 
-  const userRepository = buildUserRepositoryMock()
+  const userRepository = buildDefaultRepositoryMock()
   const usecase = new GetOneUserUseCase(userRepository)
 
   beforeEach(() => {

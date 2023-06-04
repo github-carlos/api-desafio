@@ -1,5 +1,5 @@
 import { DeleteCompanyUseCase, DeleteCompanyUseCaseInput } from '../../../../src/business/usecases/company'
-import { buildCompanyRepositoryMock } from '../../../mocks/repositories/companyRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 
 describe("#DeleteCompanyUseCase", () => {
 
@@ -7,7 +7,7 @@ describe("#DeleteCompanyUseCase", () => {
     id: '123abc'
   }
 
-  const companyRepository = buildCompanyRepositoryMock()
+  const companyRepository = buildDefaultRepositoryMock()
   const usecase = new DeleteCompanyUseCase(companyRepository)
 
   beforeEach(() => {

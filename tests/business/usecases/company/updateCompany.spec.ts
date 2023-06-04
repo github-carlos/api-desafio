@@ -1,6 +1,6 @@
 import { UpdateCompanyUseCase, UpdateCompanyUseCaseInput } from '../../../../src/business/usecases/company'
 import { CompanyDto } from '../../../../src/business/dtos'
-import { buildCompanyRepositoryMock } from '../../../mocks/repositories/companyRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 import { buildCompanyFixture } from '../../../fixtures'
 import { BusinessErrors } from '../../../../src/business/errors'
 
@@ -14,7 +14,7 @@ describe("#UpdateCompanyUseCase", () => {
   const fixtureOldDataCompany = buildCompanyFixture()
   const fixtureNewDataCompany = buildCompanyFixture({...input.data})
 
-  const companyRepository = buildCompanyRepositoryMock()
+  const companyRepository = buildDefaultRepositoryMock()
   const usecase = new UpdateCompanyUseCase(companyRepository)
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { GetOneCompanyUseCase, GetOneCompanyUseCaseInput } from '../../../../src/business/usecases/company'
 import { CompanyDto } from '../../../../src/business/dtos'
-import { buildCompanyRepositoryMock } from '../../../mocks/repositories/companyRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 import { buildCompanyFixture } from '../../../fixtures'
 import { BusinessErrors } from '../../../../src/business/errors'
 
@@ -12,7 +12,7 @@ describe("#GetOneCompanyUseCase", () => {
 
   const fixtureCompany = buildCompanyFixture()
 
-  const companyRepository = buildCompanyRepositoryMock()
+  const companyRepository = buildDefaultRepositoryMock()
   const usecase = new GetOneCompanyUseCase(companyRepository)
 
   beforeEach(() => {

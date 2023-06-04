@@ -1,6 +1,6 @@
 import { CreateCompanyUseCase, CreateCompanyUseCaseInput } from '../../../../src/business/usecases/company'
 import { CompanyDto } from '../../../../src/business/dtos'
-import { buildCompanyRepositoryMock } from '../../../mocks/repositories/companyRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 
 describe("#CreateCompanyUseCase", () => {
 
@@ -9,7 +9,7 @@ describe("#CreateCompanyUseCase", () => {
     description: 'Company description'
   }
 
-  const companyRepository = buildCompanyRepositoryMock()
+  const companyRepository = buildDefaultRepositoryMock()
   const usecase = new CreateCompanyUseCase(companyRepository)
 
   test('should call save repository with correct params', async () => {

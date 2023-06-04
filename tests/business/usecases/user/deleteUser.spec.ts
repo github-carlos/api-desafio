@@ -1,5 +1,5 @@
 import { DeleteUserUseCase, DeleteUserUseCaseInput } from '../../../../src/business/usecases/user'
-import { buildUserRepositoryMock } from '../../../mocks/repositories/userRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 
 describe("#DeleteUserUseCase", () => {
 
@@ -7,7 +7,7 @@ describe("#DeleteUserUseCase", () => {
     id: '123abc'
   }
 
-  const userRepository = buildUserRepositoryMock()
+  const userRepository = buildDefaultRepositoryMock()
   const usecase = new DeleteUserUseCase(userRepository)
 
   beforeEach(() => {

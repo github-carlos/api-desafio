@@ -1,4 +1,4 @@
-export function buildUnitRepositoryMock() {
+export function buildDefaultRepositoryMock<T>() {
   return {
     save: jest.fn(),
     getOne: jest.fn(),

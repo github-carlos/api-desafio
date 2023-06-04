@@ -27,7 +27,7 @@ export class Machine {
   model: MachineModel
   status: MachineStatusEnum
   health: number
-  id: string
+  id?: string
   constructor(params: MachineParams) {
 
     this.validate(params)

@@ -1,13 +1,13 @@
 import { GetAllCompanyUseCase } from '../../../../src/business/usecases/company'
 import { CompanyDto } from '../../../../src/business/dtos'
-import { buildCompanyRepositoryMock } from '../../../mocks/repositories/companyRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 import { buildCompanyFixture } from '../../../fixtures'
 
 describe("#GetAllCompanyUseCase", () => {
 
   const fixtureCompanies = [buildCompanyFixture({name: 'Company 1'}), buildCompanyFixture({name: 'Company 2'})]
 
-  const companyRepository = buildCompanyRepositoryMock()
+  const companyRepository = buildDefaultRepositoryMock()
   const usecase = new GetAllCompanyUseCase(companyRepository)
 
   beforeEach(() => {

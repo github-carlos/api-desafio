@@ -1,6 +1,6 @@
 import { CreateUnitUseCase, CreateUnitUseCaseInput } from '../../../../src/business/usecases/unit'
 import { UnitDto } from '../../../../src/business/dtos'
-import { buildUnitRepositoryMock } from '../../../mocks/repositories/unitRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 
 describe("#CreateUnitUseCase", () => {
 
@@ -9,7 +9,7 @@ describe("#CreateUnitUseCase", () => {
     address: {street: 'street name', city: 'city name', state: 'state', country: 'country'}
   }
 
-  const unitRepository = buildUnitRepositoryMock()
+  const unitRepository = buildDefaultRepositoryMock()
   const usecase = new CreateUnitUseCase(unitRepository)
 
   test('should call save repository with correct params', async () => {

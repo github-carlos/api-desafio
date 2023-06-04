@@ -1,5 +1,5 @@
 import { DeleteUnitUseCase, DeleteUnitUseCaseInput } from '../../../../src/business/usecases/unit'
-import { buildUnitRepositoryMock } from '../../../mocks/repositories/unitRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 
 describe("#DeleteUnitUseCase", () => {
 
@@ -7,7 +7,7 @@ describe("#DeleteUnitUseCase", () => {
     id: '123abc'
   }
 
-  const unitRepository = buildUnitRepositoryMock()
+  const unitRepository = buildDefaultRepositoryMock()
   const usecase = new DeleteUnitUseCase(unitRepository)
 
   beforeEach(() => {

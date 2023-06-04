@@ -1,13 +1,13 @@
 import { GetAllUserUseCase } from '../../../../src/business/usecases/user'
 import { UserDto } from '../../../../src/business/dtos'
-import { buildUserRepositoryMock } from '../../../mocks/repositories/userRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 import { buildUserFixture } from '../../../fixtures'
 
 describe("#GetAllUserUseCase", () => {
 
   const fixtureCompanies = [buildUserFixture({username: 'User 1'}), buildUserFixture({username: 'User 2'})]
 
-  const userRepository = buildUserRepositoryMock()
+  const userRepository = buildDefaultRepositoryMock()
   const usecase = new GetAllUserUseCase(userRepository)
 
   beforeEach(() => {

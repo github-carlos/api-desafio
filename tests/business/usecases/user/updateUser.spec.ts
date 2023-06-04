@@ -1,6 +1,6 @@
 import { UpdateUserUseCase, UpdateUserUseCaseInput } from '../../../../src/business/usecases/user'
 import { UserDto } from '../../../../src/business/dtos'
-import { buildUserRepositoryMock } from '../../../mocks/repositories/userRepositoryMock.factory'
+import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 import { buildUserFixture } from '../../../fixtures'
 import { BusinessErrors } from '../../../../src/business/errors'
 
@@ -14,7 +14,7 @@ describe("#UpdateUserUseCase", () => {
   const fixtureOldDataUser = buildUserFixture()
   const fixtureNewDataUser = buildUserFixture({...input.data})
 
-  const UserRepository = buildUserRepositoryMock()
+  const UserRepository = buildDefaultRepositoryMock()
   const usecase = new UpdateUserUseCase(UserRepository)
 
   beforeEach(() => {

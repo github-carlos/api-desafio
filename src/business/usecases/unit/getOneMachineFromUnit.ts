@@ -5,7 +5,6 @@ import { MachineDto } from '@business/dtos';
 import { BusinessErrors } from '@business/errors';
 
 export interface GetOneMachineFromUnitUseCaseInput {
-  unitId: string
   machineId: string
 }
 
@@ -13,20 +12,18 @@ export class GetOneMachineFromUnitUseCase implements UseCase<GetOneMachineFromUn
 
   private debug: Debugger
 
-  constructor(private machineRepository: MachineRepository, private unitRepository: UnitRepository) {
+  constructor(private machineRepository: MachineRepository) {
     this.debug = debug(GetOneMachineFromUnitUseCase.name)
   }
 
   async run(input: GetOneMachineFromUnitUseCaseInput): Promise<MachineDto> {
     this.debug('START', input)
     
-    const unit = await this.unitRepository.getOne(input.unitId)
-
-    if (!unit) {
-      throw new BusinessErrors.UnitErrors.UnitNotFoundError()
-    }
-
     const machine = await this.machineRepository.getOne(input.machineId)
+
+    if (!machine) {
+      throw new BusinessErrors.UnitErrors.MachineNotFoundError()
+    }
 
     this.debug('FINISH')
     return MachineDto.fromEntity(machine)

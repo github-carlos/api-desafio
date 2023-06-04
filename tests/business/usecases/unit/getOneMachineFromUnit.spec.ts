@@ -8,34 +8,30 @@ import { Machine, MachineStatusEnum, Unit } from '../../../../src/domain/entitie
 describe("#GetOneMachineFromUnitUseCase", () => {
 
   const input: GetOneMachineFromUnitUseCaseInput = {
-    unitId: 'abcd',
     machineId: '123abc'
   }
 
   const fixtureUnit = buildUnitFixture()
   const machineFixture = buildMachineFixture({id: input.machineId})
 
-  const unitRepository = buildDefaultRepositoryMock()
   const machineRepository = buildDefaultRepositoryMock<Machine>()
-  const usecase = new GetOneMachineFromUnitUseCase(machineRepository, unitRepository)
+  const usecase = new GetOneMachineFromUnitUseCase(machineRepository)
 
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
   test('should return machine unit with success', async () => {
-    unitRepository.getOne.mockResolvedValueOnce(fixtureUnit)
     machineRepository.getOne.mockResolvedValueOnce(machineFixture)
 
     const machine: MachineDto = await usecase.run(input)
 
-    expect(unitRepository.getOne).toBeCalledWith(input.unitId)
     expect(machineRepository.getOne).toBeCalledWith(input.machineId)
     expect(machine.id).toBe(input.machineId)
   })
 
-  test('should throw error when unit not found', async () => {
-    unitRepository.getOne.mockResolvedValueOnce(null)
-    await expect(usecase.run(input)).rejects.toStrictEqual(new BusinessErrors.UnitErrors.UnitNotFoundError())
+  test('should throw error when machine not found', async () => {
+    machineRepository.getOne.mockResolvedValueOnce(null)
+    await expect(usecase.run(input)).rejects.toStrictEqual(new BusinessErrors.UnitErrors.MachineNotFoundError())
   })
 })

@@ -22,6 +22,10 @@ export namespace BusinessErrors {
     export class UnitNotFoundError implements BusinessError {
       constructor(public name = UnitNotFoundError.name, public message = 'Unit not found') {}
     }
+
+    export class MachineNotFoundError implements BusinessError {
+      constructor(public name = MachineNotFoundError.name, public message = 'Machine not found') {}
+    }
   }
 
 }

@@ -7,6 +7,8 @@ export function buildMachineFixture(args?: Partial<Machine>): Machine {
     model: args?.model ?? { name: 'model 1', description: '12345' },
     health: args?.health ?? 50,
     status: args?.status ?? 'Running' as MachineStatusEnum,
-    unitId: args?.unitId ?? '123bc' }
+    unitId: args?.unitId ?? '123bc',
+    id: args?.id
+   }
   )
 }

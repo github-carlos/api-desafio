@@ -18,4 +18,10 @@ export namespace BusinessErrors {
 
   }
 
+  export namespace UnitErrors {
+    export class UnitNotFoundError implements BusinessError {
+      constructor(public name = UnitNotFoundError.name, public message = 'Unit not found') {}
+    }
+  }
+
 }

@@ -1,5 +1,5 @@
 import { AddMachineToUnitUseCase, AddMachineToUnitUseCaseInput } from '../../../../src/business/usecases/unit'
-import { MachineDto, UnitDto } from '../../../../src/business/dtos'
+import { MachineDto } from '../../../../src/business/dtos'
 import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultRepositoryMock.factory'
 import { buildMachineFixture, buildUnitFixture } from '../../../fixtures'
 import { BusinessErrors } from '../../../../src/business/errors'

@@ -1,8 +1,6 @@
 import { Debugger, debug } from 'debug'
-import { CompanyDto } from "@business/dtos";
 import { CompanyRepository } from "@business/repositories";
 import { UseCase } from "../usecase.interface";
-import { BusinessErrors } from '@business/errors';
 
 export interface DeleteCompanyUseCaseInput {
   id: string

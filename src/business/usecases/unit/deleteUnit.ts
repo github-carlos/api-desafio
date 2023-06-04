@@ -1,0 +1,25 @@
+import { Debugger, debug } from 'debug'
+import { UnitRepository } from "@business/repositories";
+import { UseCase } from "../usecase.interface";
+
+export interface DeleteUnitUseCaseInput {
+  id: string
+}
+
+export class DeleteUnitUseCase implements UseCase<DeleteUnitUseCaseInput, Promise<boolean>> {
+
+  private debug: Debugger
+  
+  constructor(private UnitRepository: UnitRepository) {
+    this.debug = debug(DeleteUnitUseCase.name)
+  }
+
+  async run(input: DeleteUnitUseCaseInput): Promise<boolean> {
+    this.debug('Started', input)
+
+    const deletedUnit = await this.UnitRepository.delete(input.id)
+
+    this.debug('Finished')
+    return deletedUnit
+  }
+}

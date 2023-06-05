@@ -39,14 +39,36 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
     }
   }
 
-  getAll(): Promise<Company[]> {
-    throw new Error("Method not implemented.");
+  async getAll(): Promise<Company[]> {
+    this.debug('Getting all Companies')
+    try {
+      const companies = await this.model.find()
+
+      return companies.map((company) => this.toCompanyEntity(company.toJSON()))
+    } catch(err) {
+      this.debug('Error getting all companies', err)
+      throw new InfraErrors.DataBaseErrors.OperationError()
+    }
   }
-  delete(id: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async delete(id: string): Promise<boolean> {
+    this.debug('Deleting company')
+    try {
+      const deleted = await this.model.deleteOne({id})
+      return deleted.deletedCount > 0
+    } catch(err) {
+      this.debug('Error deleting company', err)
+      throw new InfraErrors.DataBaseErrors.OperationError()
+    }
   }
-  update(id: string, data: Partial<Company>): Promise<Company> {
-    throw new Error("Method not implemented.");
+  async update(id: string, data: Partial<Company>): Promise<Company> {
+    this.debug('Updating Company')
+    try {
+      const updatedData = await this.model.findOneAndUpdate({id}, data)
+      return this.toCompanyEntity(updatedData.toJSON())
+    } catch(err) {
+      this.debug('Error updating company data', err)
+      throw new InfraErrors.DataBaseErrors.OperationError()
+    }
   }
 
   private toCompanyEntity(companyJSON: Pick<Company, keyof Company>): Company {

@@ -57,4 +57,75 @@ describe('#CompanyRepositoryMongoDb', () => {
       await expect(repository.getOne(company.id!)).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
     })
   })
+
+  describe("#getAll", () => {
+
+    test('should return all companies with success', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'find')
+      modelSpy.mockResolvedValueOnce([{toJSON: () => company}])
+
+      const companies = await repository.getAll()
+
+      expect(companies.length).toBe(1)
+      expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should throw error when database query fails', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'find')
+      modelSpy.mockRejectedValueOnce('some error')
+
+      await expect(repository.getAll()).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
+    })
+  })
+
+  describe("#delete", () => {
+
+    test('should return true when delete a company with success', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'deleteOne')
+      modelSpy.mockResolvedValueOnce({deletedCount: 1, acknowledged: true})
+
+      const deleted = await repository.delete(company.id!)
+
+      expect(deleted).toBeTruthy()
+      expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should return false when delete a company with no success', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'deleteOne')
+      modelSpy.mockResolvedValueOnce({deletedCount: 0, acknowledged: false})
+
+      const deleted = await repository.delete(company.id!)
+
+      expect(deleted).toBeFalsy()
+      expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should throw error when database query fails', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'deleteOne')
+      modelSpy.mockRejectedValueOnce('some error')
+
+      await expect(repository.delete(company.id!)).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
+    })
+  })
+
+  describe("#update", () => {
+
+    const data = {name: 'New name'}
+
+    test("should update company with success", async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'findOneAndUpdate')
+      modelSpy.mockResolvedValueOnce({toJSON: () => ({...company, ...data})})
+
+      const updatedCompany = await repository.update(company.id!, data)
+
+      expect(updatedCompany.name).toBe(data.name)
+      expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should throw error when database query fails', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'findOneAndUpdate')
+      modelSpy.mockRejectedValueOnce('some error')
+      await expect(repository.update(company.id!, data)).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
+    })
+  })
 })

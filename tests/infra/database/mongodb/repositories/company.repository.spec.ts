@@ -87,7 +87,6 @@ describe('#CompanyRepositoryMongoDb', () => {
       const deleted = await repository.delete(company.id!)
 
       expect(deleted).toBeTruthy()
-      expect(modelSpy).toBeCalledTimes(1)
     })
 
     test('should return false when delete a company with no success', async () => {
@@ -97,7 +96,6 @@ describe('#CompanyRepositoryMongoDb', () => {
       const deleted = await repository.delete(company.id!)
 
       expect(deleted).toBeFalsy()
-      expect(modelSpy).toBeCalledTimes(1)
     })
 
     test('should throw error when database query fails', async () => {

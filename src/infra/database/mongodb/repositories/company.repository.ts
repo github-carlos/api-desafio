@@ -1,7 +1,7 @@
 import { Debugger, debug } from 'debug'
 import { CompanyRepository } from "@business/repositories";
 import { Company } from "@domain/entities";
-import { Document, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { InfraErrors } from '@infra/errors';
 
 export class CompanyRepositoryMongoDb implements CompanyRepository {

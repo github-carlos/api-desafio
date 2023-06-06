@@ -3,6 +3,7 @@ import { UnitRepository } from "@business/repositories";
 import { UseCase } from "../usecase.interface";
 
 export interface DeleteUnitUseCaseInput {
+  companyId: string,
   id: string
 }
 
@@ -17,7 +18,7 @@ export class DeleteUnitUseCase implements UseCase<DeleteUnitUseCaseInput, Promis
   async run(input: DeleteUnitUseCaseInput): Promise<boolean> {
     this.debug('Started', input)
 
-    const deletedUnit = await this.UnitRepository.delete(input.id)
+    const deletedUnit = await this.UnitRepository.delete(input.companyId, input.id)
 
     this.debug('Finished')
     return deletedUnit

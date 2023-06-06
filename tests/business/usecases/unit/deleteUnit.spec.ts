@@ -4,6 +4,7 @@ import { buildDefaultRepositoryMock } from '../../../mocks/repositories/defaultR
 describe("#DeleteUnitUseCase", () => {
 
   const input: DeleteUnitUseCaseInput = {
+    companyId: '123',
     id: '123abc'
   }
 
@@ -19,7 +20,7 @@ describe("#DeleteUnitUseCase", () => {
     const deletedUnit = await usecase.run(input)
     
     expect(deletedUnit).toBeTruthy()
-    expect(unitRepository.delete).toBeCalledWith(input.id)
+    expect(unitRepository.delete).toBeCalledWith(input.companyId, input.id)
   })
 
   test('should return false when delete a Unit fails', async () => {
@@ -27,6 +28,6 @@ describe("#DeleteUnitUseCase", () => {
     const deletedUnit = await usecase.run(input)
     
     expect(deletedUnit).toBeFalsy()
-    expect(unitRepository.delete).toBeCalledWith(input.id)
+    expect(unitRepository.delete).toBeCalledWith(input.companyId, input.id)
   })
 })

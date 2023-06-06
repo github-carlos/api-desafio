@@ -6,6 +6,7 @@ import { Unit } from '@domain/entities';
 import { BusinessErrors } from '@business/errors';
 
 export interface UpdateUnitUseCaseInput {
+  companyId: string,
   id: string,
   data: Partial<Unit>
 }
@@ -27,7 +28,7 @@ export class UpdateUnitUseCase implements UseCase<UpdateUnitUseCaseInput, Promis
       throw new BusinessErrors.UnitErrors.UnitNotFoundError
     }
 
-    const updatedUnit = await this.UnitRepository.update(input.id, input.data)
+    const updatedUnit = await this.UnitRepository.update(input.companyId, input.id, input.data)
 
     this.debug('Finished')
     return UnitDto.fromEntity(updatedUnit)

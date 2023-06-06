@@ -11,4 +11,4 @@ const machineSchema = new Schema({
   health: { type: Number, default: 100 }
 })
 
-export const machineMongooseModel = model<Machine>('Machine', machineSchema);
+export const MachineMongooseModel = model<Machine>('Machine', machineSchema);

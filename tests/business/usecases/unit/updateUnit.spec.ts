@@ -7,6 +7,7 @@ import { BusinessErrors } from '../../../../src/business/errors'
 describe("#UpdateUnitUseCase", () => {
 
   const input: UpdateUnitUseCaseInput = {
+    companyId: '123',
     id: '123abc',
     data: {address: {street: 'New Street', city: 'New city', state: 'New state', country: 'brazil'}}
   }
@@ -26,7 +27,7 @@ describe("#UpdateUnitUseCase", () => {
     unitRepository.getOne.mockResolvedValueOnce(fixtureOldDataUnit)
 
     await usecase.run(input)
-    expect(unitRepository.update).toBeCalledWith(input.id, input.data)
+    expect(unitRepository.update).toBeCalledWith(input.companyId, input.id, input.data)
   })
 
   test('should update Unit with success', async () => {

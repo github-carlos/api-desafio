@@ -13,7 +13,7 @@ export class GetAllMachineFromUnitUseCase implements UseCase<GetAllMachineFromUn
   private debug: Debugger
 
   constructor(private machineRepository: MachineRepository, private unitRepository: UnitRepository) {
-    this.debug = debug(GetAllMachineFromUnitUseCase.name)
+    this.debug = debug('server::' +GetAllMachineFromUnitUseCase.name)
   }
 
   async run(input: GetAllMachineFromUnitUseCaseInput): Promise<Array<MachineDto>> {

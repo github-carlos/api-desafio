@@ -10,7 +10,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   private debug: Debugger
 
   constructor(private companyModel: Model<Company>) {
-    this.debug = debug(UnitRepositoryMongoDb.name)
+    this.debug = debug('server::' +UnitRepositoryMongoDb.name)
   }
 
   async save(unit: Unit): Promise<void> {

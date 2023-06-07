@@ -12,7 +12,7 @@ export class DeleteUnitUseCase implements UseCase<DeleteUnitUseCaseInput, Promis
   private debug: Debugger
   
   constructor(private UnitRepository: UnitRepository) {
-    this.debug = debug(DeleteUnitUseCase.name)
+    this.debug = debug('server::' +DeleteUnitUseCase.name)
   }
 
   async run(input: DeleteUnitUseCaseInput): Promise<boolean> {

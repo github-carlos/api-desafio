@@ -20,7 +20,7 @@ export class MongoDB implements Database {
   private dbName: string
 
   constructor(params: MongoDBParams) {
-    this.debug = debug(MongoDB.name)
+    this.debug = debug('server::' +MongoDB.name)
     this.username = params.username
     this.password = params.password
     this.dbUri = params.dbUri
@@ -29,8 +29,8 @@ export class MongoDB implements Database {
 
   async connect() {
     try {
-      const dbUrl = `mongodb+srv://${this.username}:${this.password}${this.dbUri}/${this.dbName}`
-      this.debug('Connecting to', this.dbUri)
+      const dbUrl = `mongodb://${this.username}:${this.password}${this.dbUri}/${this.dbName}`
+      this.debug('Connecting to', dbUrl)
       // connecting to mongo database
       await Mongoose.connect(dbUrl);
       this.debug("Connected to MongoDB database.");

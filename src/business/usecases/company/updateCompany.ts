@@ -15,7 +15,7 @@ export class UpdateCompanyUseCase implements UseCase<UpdateCompanyUseCaseInput, 
   private debug: Debugger
   
   constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(UpdateCompanyUseCase.name)
+    this.debug = debug('server::' +UpdateCompanyUseCase.name)
   }
 
   async run(input: UpdateCompanyUseCaseInput): Promise<CompanyDto> {

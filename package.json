@@ -4,8 +4,8 @@
   "private": false,
   "scripts": {
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s .",
-    "start:dev": "nodemon server",
-    "start": "node ./dist/server.js",
+    "start:dev": "DEBUG=server* nodemon server",
+    "start": "DEBUG=server* node ./dist/server.js",
     "test": "npx jest"
   },
   "dependencies": {

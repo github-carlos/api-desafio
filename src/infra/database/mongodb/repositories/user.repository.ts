@@ -9,7 +9,7 @@ export class UserRepositoryMongoDb implements UserRepository {
   private debug: Debugger
 
   constructor(private model: Model<User>) {
-    this.debug = debug(UserRepositoryMongoDb.name)
+    this.debug = debug('server::' +UserRepositoryMongoDb.name)
   }
 
   async save(User: User): Promise<void> {

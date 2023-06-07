@@ -13,7 +13,7 @@ export class GetOneUnitUseCase implements UseCase<GetOneUnitUseCaseInput, Promis
   private debug: Debugger
   
   constructor(private UnitRepository: UnitRepository) {
-    this.debug = debug(GetOneUnitUseCase.name)
+    this.debug = debug('server::' +GetOneUnitUseCase.name)
   }
 
   async run(input: GetOneUnitUseCaseInput): Promise<UnitDto> {

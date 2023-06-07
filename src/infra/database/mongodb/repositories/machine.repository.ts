@@ -11,7 +11,7 @@ export class MachineRepositoryMongoDb implements MachineRepository {
   private debug: Debugger
 
   constructor(private model: Model<Machine>, private companyModel: typeof CompanyMongooseModel) {
-    this.debug = debug(MachineRepositoryMongoDb.name)
+    this.debug = debug('server::' +MachineRepositoryMongoDb.name)
   }
 
   async save(machine: Machine): Promise<void> {

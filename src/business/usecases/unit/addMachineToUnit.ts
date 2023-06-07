@@ -15,7 +15,7 @@ export class AddMachineToUnitUseCase implements UseCase<AddMachineToUnitUseCaseI
   private debug: Debugger
 
   constructor(private machineRepository: MachineRepository, private unitRepository: UnitRepository) {
-    this.debug = debug(AddMachineToUnitUseCase.name)
+    this.debug = debug('server::' +AddMachineToUnitUseCase.name)
   }
 
   async run(input: AddMachineToUnitUseCaseInput): Promise<MachineDto> {

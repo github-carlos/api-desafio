@@ -1,3 +1,3 @@
-export interface DomainError extends Error {
+export class DomainError extends Error {
   message: string
 }

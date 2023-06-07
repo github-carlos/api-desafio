@@ -13,7 +13,7 @@ export class DeleteUserUseCase implements UseCase<DeleteUserUseCaseInput, Promis
   private debug: Debugger
   
   constructor(private UserRepository: UserRepository) {
-    this.debug = debug(DeleteUserUseCase.name)
+    this.debug = debug('server::' +DeleteUserUseCase.name)
   }
 
   async run(input: DeleteUserUseCaseInput): Promise<boolean> {

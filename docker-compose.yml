@@ -9,8 +9,15 @@ services:
       - ./:/app
     depends_on:
       - mongo
+    environment:
+      - DB_NAME=admin
+      - DB_URI=@mongo:27017
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
     # command: "node dist/app.js"
     command: "npm run start:dev" ## for development
+    networks:
+      - mongo-network
 
   mongo:
     image: mongo:4

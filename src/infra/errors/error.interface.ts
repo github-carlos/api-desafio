@@ -1,3 +1,3 @@
-export interface InfraError extends Error {
+export class InfraError extends Error {
   message: string
 }

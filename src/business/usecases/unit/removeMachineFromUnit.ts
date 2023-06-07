@@ -14,7 +14,7 @@ export class RemoveMachineFromUnitUseCase implements UseCase<RemoveMachineFromUn
   private debug: Debugger
 
   constructor(private machineRepository: MachineRepository) {
-    this.debug = debug(RemoveMachineFromUnitUseCase.name)
+    this.debug = debug('server::' +RemoveMachineFromUnitUseCase.name)
   }
 
   async run(input: RemoveMachineFromUnitUseCaseInput): Promise<boolean> {

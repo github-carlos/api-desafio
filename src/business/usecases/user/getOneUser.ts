@@ -13,7 +13,7 @@ export class GetOneUserUseCase implements UseCase<GetOneUserUseCaseInput, Promis
   private debug: Debugger
   
   constructor(private UserRepository: UserRepository) {
-    this.debug = debug(GetOneUserUseCase.name)
+    this.debug = debug('server::' +GetOneUserUseCase.name)
   }
 
   async run(input: GetOneUserUseCaseInput): Promise<UserDto> {

@@ -11,7 +11,7 @@ export class DeleteCompanyUseCase implements UseCase<DeleteCompanyUseCaseInput, 
   private debug: Debugger
   
   constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(DeleteCompanyUseCase.name)
+    this.debug = debug('server::' +DeleteCompanyUseCase.name)
   }
 
   async run(input: DeleteCompanyUseCaseInput): Promise<boolean> {

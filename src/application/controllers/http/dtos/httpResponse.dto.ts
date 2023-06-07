@@ -1,0 +1,1 @@
+export type HttpResponse = { data?: unknown, status, error?: { message: string } }

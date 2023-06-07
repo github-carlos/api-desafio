@@ -9,7 +9,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
   private debug: Debugger
 
   constructor(private model: Model<Company>) {
-    this.debug = debug(CompanyRepositoryMongoDb.name)
+    this.debug = debug('server::' +CompanyRepositoryMongoDb.name)
   }
 
   async save(company: Company): Promise<void> {
@@ -63,7 +63,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
   async update(id: string, data: Partial<Company>): Promise<Company> {
     this.debug('Updating Company')
     try {
-      const updatedData = await this.model.findOneAndUpdate({id}, data)
+      const updatedData = await this.model.findOneAndUpdate({id}, data, { new: true })
       return this.toCompanyEntity(updatedData.toJSON())
     } catch(err) {
       this.debug('Error updating company data', err)

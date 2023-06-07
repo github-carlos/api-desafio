@@ -15,7 +15,7 @@ export class UpdateMachineFromUnitUseCase implements UseCase<UpdateMachineFromUn
   private debug: Debugger
   
   constructor(private machineRepository: MachineRepository) {
-    this.debug = debug(UpdateMachineFromUnitUseCase.name)
+    this.debug = debug('server::' +UpdateMachineFromUnitUseCase.name)
   }
 
   async run(input: UpdateMachineFromUnitUseCaseInput): Promise<MachineDto> {

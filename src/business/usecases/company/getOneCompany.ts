@@ -13,7 +13,7 @@ export class GetOneCompanyUseCase implements UseCase<GetOneCompanyUseCaseInput, 
   private debug: Debugger
   
   constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(GetOneCompanyUseCase.name)
+    this.debug = debug('server::' +GetOneCompanyUseCase.name)
   }
 
   async run(input: GetOneCompanyUseCaseInput): Promise<CompanyDto> {

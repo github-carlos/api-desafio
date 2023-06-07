@@ -13,7 +13,7 @@ export class GetAllUnitsUseCase implements UseCase<GetAllUnitsUseCaseInput, Prom
   private debug: Debugger
   
   constructor(private unitsRepository: UnitRepository, private companyRepository: CompanyRepository) {
-    this.debug = debug(GetAllUnitsUseCase.name)
+    this.debug = debug('server::' +GetAllUnitsUseCase.name)
   }
 
   async run(input: GetAllUnitsUseCaseInput): Promise<Array<UnitDto>> {

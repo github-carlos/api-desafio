@@ -15,7 +15,7 @@ export class CreateUnitUseCase implements UseCase<CreateUnitUseCaseInput, Promis
   private debug: Debugger
   
   constructor(private UnitRepository: UnitRepository) {
-    this.debug = debug(CreateUnitUseCase.name)
+    this.debug = debug('server::' +CreateUnitUseCase.name)
   }
 
   async run(input: CreateUnitUseCaseInput): Promise<UnitDto> {

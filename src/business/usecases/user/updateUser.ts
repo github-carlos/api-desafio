@@ -15,7 +15,7 @@ export class UpdateUserUseCase implements UseCase<UpdateUserUseCaseInput, Promis
   private debug: Debugger
   
   constructor(private UserRepository: UserRepository) {
-    this.debug = debug(UpdateUserUseCase.name)
+    this.debug = debug('server::' +UpdateUserUseCase.name)
   }
 
   async run(input: UpdateUserUseCaseInput): Promise<UserDto> {

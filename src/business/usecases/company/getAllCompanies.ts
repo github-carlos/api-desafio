@@ -8,7 +8,7 @@ export class GetAllCompanyUseCase implements UseCase<null, Promise<Array<Company
   private debug: Debugger
   
   constructor(private companyRepository: CompanyRepository) {
-    this.debug = debug(GetAllCompanyUseCase.name)
+    this.debug = debug('server::' +GetAllCompanyUseCase.name)
   }
 
   async run(): Promise<Array<CompanyDto>> {

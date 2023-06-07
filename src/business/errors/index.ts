@@ -1,30 +1,38 @@
-import { BusinessError } from "./error.interface";
+import { BusinessError, EntityNotFoundError } from "./error.interface";
 
 export namespace BusinessErrors {
 
   export namespace CompanyErrors {
     
-    export class CompanyNotFoundError implements BusinessError {
-      constructor(public name = CompanyNotFoundError.name, public message = 'Company not found') {}
+    export class CompanyNotFoundError extends EntityNotFoundError {
+      constructor(public name = CompanyNotFoundError.name, public message = 'Company not found') {
+        super()
+      }
     }
 
   }
 
   export namespace UserErrors {
 
-    export class UserNotFoundError implements BusinessError {
-      constructor(public name = UserNotFoundError.name, public message = 'User not found') {}
+    export class UserNotFoundError extends EntityNotFoundError {
+      constructor(public name = UserNotFoundError.name, public message = 'User not found') {
+        super()
+      }
     }
 
   }
 
   export namespace UnitErrors {
-    export class UnitNotFoundError implements BusinessError {
-      constructor(public name = UnitNotFoundError.name, public message = 'Unit not found') {}
+    export class UnitNotFoundError extends EntityNotFoundError {
+      constructor(public name = UnitNotFoundError.name, public message = 'Unit not found') {
+        super()
+      }
     }
 
-    export class MachineNotFoundError implements BusinessError {
-      constructor(public name = MachineNotFoundError.name, public message = 'Machine not found') {}
+    export class MachineNotFoundError extends EntityNotFoundError {
+      constructor(public name = MachineNotFoundError.name, public message = 'Machine not found') {
+        super()
+      }
     }
   }
 

@@ -63,7 +63,7 @@ export class UserRepositoryMongoDb implements UserRepository {
   async update(id: string, data: Partial<User>): Promise<User> {
     this.debug('Updating User')
     try {
-      const updatedData = await this.model.findOneAndUpdate({id}, data)
+      const updatedData = await this.model.findOneAndUpdate({id}, data, { new: true })
       return this.toUserEntity(updatedData.toJSON())
     } catch(err) {
       this.debug('Error updating User data', err)

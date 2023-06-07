@@ -2,7 +2,7 @@ import * as createError from 'http-errors'
 import { debug, Debugger } from 'debug'
 import express from 'express'
 import logger from 'morgan'
-import { buildCompanyRouter } from './factories'
+import { buildCompanyRouter, buildUserRouter } from './factories'
 import { MongoDB } from '@infra/database/mongodb'
 
 export class App {
@@ -50,6 +50,7 @@ export class App {
   private applyRoutes() {
     this.debug('Applying routes...')
     this.app.use('/companies', buildCompanyRouter().buildRoutes())
+    this.app.use('/users', buildUserRouter().buildRoutes())
 
     this.app.use(function (req, res, next) {
       return res.status(404).send('Route not found')

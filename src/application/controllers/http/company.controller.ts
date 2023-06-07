@@ -67,7 +67,7 @@ export class CompanyHttpController implements CompanyController<Promise<HttpResp
       }
     }
 
-    async deleteOneCompany(id: string): Promise<HttpResponse> {
+    async deleteCompany(id: string): Promise<HttpResponse> {
       this.debug('Deleting One Company')
       try {
         const success = await this.deleteOneCompanyUseCase.run({id})

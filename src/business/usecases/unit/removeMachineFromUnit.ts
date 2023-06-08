@@ -6,6 +6,7 @@ import { MachineDto } from '@business/dtos';
 import { BusinessErrors } from '@business/errors';
 
 export interface RemoveMachineFromUnitUseCaseInput {
+  unitId: string
   machineId: string
 }
 
@@ -25,6 +26,8 @@ export class RemoveMachineFromUnitUseCase implements UseCase<RemoveMachineFromUn
     if (!machine) {
       throw new BusinessErrors.UnitErrors.MachineNotFoundError()
     }
+
+    // TODO: ver se necessita enviar unitId para remover do array
 
     const removed = await this.machineRepository.delete(input.machineId)
 

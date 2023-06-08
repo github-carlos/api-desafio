@@ -8,7 +8,7 @@ const companySchema = new Schema({
   units: [new Schema({
     id: { type: String, required: true, sparse: true, index: true },
     address: { street: String, city: String, state: String, country: String },
-    machines: {type: SchemaTypes.ObjectId, ref: 'Machine'}
+    machines: {type: SchemaTypes.ObjectId, ref: 'Machine' }
   })]
 });
 

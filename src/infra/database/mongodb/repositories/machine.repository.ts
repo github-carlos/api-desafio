@@ -1,7 +1,7 @@
 import { Debugger, debug } from 'debug'
 import { MachineRepository } from "@business/repositories";
-import { Machine, Unit } from "@domain/entities";
-import { Model } from 'mongoose';
+import { Machine } from "@domain/entities";
+import { Model, Types } from 'mongoose';
 import { InfraErrors } from '@infra/errors';
 import { MachineModel } from '@domain/valueObjects';
 import { CompanyMongooseModel } from '../schemas';
@@ -11,14 +11,15 @@ export class MachineRepositoryMongoDb implements MachineRepository {
   private debug: Debugger
 
   constructor(private model: Model<Machine>, private companyModel: typeof CompanyMongooseModel) {
-    this.debug = debug('server::' +MachineRepositoryMongoDb.name)
+    this.debug = debug('server::' + MachineRepositoryMongoDb.name)
   }
 
   async save(machine: Machine): Promise<void> {
     this.debug('Saving model', machine)
     try {
       // TODO: add machine id to unit document
-      await this.model.create(machine)
+      const savedMachine = await this.model.create(machine)
+      await this.companyModel.findOneAndUpdate({ 'units.id': machine.unitId }, { $push: { 'units.$.machines': savedMachine._id } })
       this.debug('Saved')
     } catch (err) {
       this.debug('Error saving model', err)
@@ -49,6 +50,8 @@ export class MachineRepositoryMongoDb implements MachineRepository {
       const machines: any = await this.companyModel
         .findOne({ 'units.id': unitId })
         .populate('machines').select('machines')
+
+      this.debug('Found Machines', machines)
 
       return machines.map((Machine) => this.toMachineEntity(Machine.toJSON()))
     } catch (err) {

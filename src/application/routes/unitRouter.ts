@@ -28,7 +28,7 @@ export class UnitRouter {
     })
 
     router.get('/:id', async (req: Request, res: Response) => {
-      const companyId = req.params.comopanyId
+      const companyId = req.params.companyId
       const id = req.params.id
       const response = await this.controller.getOneUnit(companyId, id)
       return res.status(response.status).json(response)

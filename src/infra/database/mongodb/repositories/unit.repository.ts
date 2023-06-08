@@ -27,11 +27,14 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   async getOne(companyId: string, id: string): Promise<Unit> {
     this.debug('Getting model', id)
     try {
-      const unit = await this.companyModel.findOne({id: companyId, 'units.id': id})
+      const company = (await this.companyModel.findOne({id: companyId, 'units.id': id}) as any)
 
-      if (!unit) {
+      if (!company) {
         return null
       }
+
+      const unit = company.units.find((unit) => unit.id === id)
+      this.debug('Found unit:', unit)
 
       return this.toUnitEntity(companyId, unit.toJSON())
     } catch(err) {

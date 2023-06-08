@@ -2,8 +2,9 @@ import { debug, Debugger } from 'debug'
 import { CreateCompanyUseCase, DeleteCompanyUseCase, GetAllCompanyUseCase, GetOneCompanyUseCase, UpdateCompanyUseCase } from "@business/usecases/company";
 import { CompanyController } from '@infra/controllers/companyController.interface';
 import { HttpResponse } from './dtos/httpResponse.dto';
-import { CompanyDto } from '@business/dtos';
+import { CompanyDto, UnitDto } from '@business/dtos';
 import { errorHandler } from './errors/errorHandler';
+import { CreateUnitUseCase } from '@business/usecases/unit';
 
 export class CompanyHttpController implements CompanyController<Promise<HttpResponse>> {
   private debug: Debugger
@@ -12,7 +13,7 @@ export class CompanyHttpController implements CompanyController<Promise<HttpResp
     private getOneCompanyUseCase: GetOneCompanyUseCase,
     private getAllCompaniesUseCase: GetAllCompanyUseCase,
     private updateCompanyUseCase: UpdateCompanyUseCase,
-    private deleteOneCompanyUseCase: DeleteCompanyUseCase
+    private deleteOneCompanyUseCase: DeleteCompanyUseCase,
     ) {
       this.debug = debug('server::' +CompanyHttpController.name)
     }
@@ -78,5 +79,4 @@ export class CompanyHttpController implements CompanyController<Promise<HttpResp
         return errorHandler(err)
       }
     }
-
 }

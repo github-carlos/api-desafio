@@ -14,15 +14,15 @@ export class CreateUnitUseCase implements UseCase<CreateUnitUseCaseInput, Promis
 
   private debug: Debugger
   
-  constructor(private UnitRepository: UnitRepository) {
-    this.debug = debug('server::' +CreateUnitUseCase.name)
+  constructor(private unitRepository: UnitRepository) {
+    this.debug = debug('server::' + CreateUnitUseCase.name)
   }
 
   async run(input: CreateUnitUseCaseInput): Promise<UnitDto> {
     this.debug('Started', input)
 
     const newUnit = new Unit(input.companyId, input.address)
-    await this.UnitRepository.save(newUnit)
+    await this.unitRepository.save(newUnit)
 
     this.debug('Finished')
     return UnitDto.fromEntity(newUnit)

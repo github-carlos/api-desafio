@@ -1,15 +1,15 @@
 import { Debugger, debug } from 'debug'
 import { UnitRepository } from "@business/repositories";
 import { Company, Unit } from "@domain/entities";
-import { Model } from 'mongoose';
 import { InfraErrors } from '@infra/errors';
 import { Address } from '@domain/valueObjects';
+import { CompanyMongooseModel } from '../schemas'
 
 export class UnitRepositoryMongoDb implements UnitRepository {
 
   private debug: Debugger
 
-  constructor(private companyModel: Model<Company>) {
+  constructor(private companyModel: typeof CompanyMongooseModel) {
     this.debug = debug('server::' +UnitRepositoryMongoDb.name)
   }
 
@@ -24,16 +24,16 @@ export class UnitRepositoryMongoDb implements UnitRepository {
     }
   }
 
-  async getOne(id: string): Promise<Unit> {
+  async getOne(companyId: string, id: string): Promise<Unit> {
     this.debug('Getting model', id)
     try {
-      const Unit = await this.companyModel.findOne({'units.id': id})
+      const unit = await this.companyModel.findOne({id: companyId, 'units.id': id})
 
-      if (!Unit) {
+      if (!unit) {
         return null
       }
 
-      return this.toUnitEntity(Unit.toJSON())
+      return this.toUnitEntity(companyId, unit.toJSON())
     } catch(err) {
       this.debug('Error getting model', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
@@ -43,9 +43,9 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   async getAll(companyId: string): Promise<Unit[]> {
     this.debug('Getting all Units')
     try {
-      const units: any = await this.companyModel.findOne({id: companyId})
+      const units = (await this.companyModel.findOne({id: companyId}) as any).units
 
-      return units.map((Unit) => this.toUnitEntity(Unit.toJSON()))
+      return units.map((unit) => this.toUnitEntity(companyId, unit))
     } catch(err) {
       this.debug('Error getting all Units', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
@@ -66,14 +66,14 @@ export class UnitRepositoryMongoDb implements UnitRepository {
     this.debug('Updating Unit')
     try {
       const updatedData = await this.companyModel.findOneAndUpdate({id: companyId, 'units.id': id}, { $set: { 'units.$': data} })
-      return this.toUnitEntity(updatedData.toJSON())
+      return this.toUnitEntity(companyId, updatedData.toJSON())
     } catch(err) {
       this.debug('Error updating Unit data', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
 
-  private toUnitEntity(unitJSON: Pick<Unit, keyof Unit>): Unit {
-    return new Unit(unitJSON.companyId, new Address(unitJSON.address.street, unitJSON.address.city, unitJSON.address.state, unitJSON.address.country), unitJSON.id)
+  private toUnitEntity(companyId: string, unitJSON: Pick<Unit, keyof Unit>): Unit {
+    return new Unit(companyId, new Address(unitJSON.address.street, unitJSON.address.city, unitJSON.address.state, unitJSON.address.country), unitJSON.id)
   }
 }

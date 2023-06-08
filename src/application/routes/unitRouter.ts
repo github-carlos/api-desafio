@@ -1,50 +1,53 @@
 import { debug, Debugger } from 'debug'
-import { CompanyHttpController, UnitHttpController } from "@application/controllers/http";
+import { UnitHttpController } from "@application/controllers/http";
 import { Request, Router, Response } from "express";
-import { UnitController } from '@infra/controllers';
 
-export class CompanyRouter {
+export class UnitRouter {
 
   private debug: Debugger
 
-  constructor(private controller: CompanyHttpController) {
-    this.debug = debug('server::' + CompanyRouter.name)
+  constructor(private controller: UnitHttpController) {
+    this.debug = debug('server::' + UnitRouter.name)
   }
 
   buildRoutes(): Router {
-    this.debug('Building Company Routes...')
-    const router = Router()
+    this.debug('Building Unit Routes...')
+    const router = Router( { mergeParams: true } )
     
     router.post('/', async (req: Request, res: Response) => {
-      const response = await this.controller.createCompany(req.body)
+      const id = req.params.companyId
+      const data = req.body
+      const response = await this.controller.createUnit({...data, companyId: id, })
       return res.status(response.status).json(response)
     })
 
     router.get('/', async (req: Request, res: Response) => {
-      const response = await this.controller.getAllCompanies()
+      const companyId = req.params.companyId
+      const response = await this.controller.getAllUnits(companyId)
       return res.status(response.status).json(response)
     })
 
     router.get('/:id', async (req: Request, res: Response) => {
+      const companyId = req.params.comopanyId
       const id = req.params.id
-      const response = await this.controller.getOneCompany(id)
+      const response = await this.controller.getOneUnit(companyId, id)
       return res.status(response.status).json(response)
     })
 
     router.put('/:id', async (req: Request, res: Response) => {
+      const companyId = req.params.companyId
       const id = req.params.id
       const data = req.body
-      const response = await this.controller.updateCompany(id, data)
+      const response = await this.controller.updateUnit(companyId, id, data)
       return res.status(response.status).json(response)
     })
 
     router.delete('/:id', async (req: Request, res: Response) => {
+      const companyId = req.params.companyId
       const id = req.params.id
-      const response = await this.controller.deleteCompany(id)
+      const response = await this.controller.deleteUnit(companyId, id)
       return res.status(response.status).json(response)
     })
-
-
 
     return router
   }

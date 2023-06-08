@@ -8,6 +8,7 @@ import { Machine } from '../../../../src/domain/entities'
 describe("#GetAllMachineFromUnitUseCase", () => {
 
   const input: GetAllMachineFromUnitUseCaseInput = {
+    companyId: 'abc123',
     unitId: 'abcd'
   }
 
@@ -28,7 +29,7 @@ describe("#GetAllMachineFromUnitUseCase", () => {
 
     const machines: Array<MachineDto> = await usecase.run(input)
 
-    expect(unitRepository.getOne).toBeCalledWith(input.unitId)
+    expect(unitRepository.getOne).toBeCalledWith(input.companyId, input.unitId)
     expect(machineRepository.getAll).toBeCalledWith(input.unitId)
     expect(machines.length).toBe(machinesFixture.length)
   })

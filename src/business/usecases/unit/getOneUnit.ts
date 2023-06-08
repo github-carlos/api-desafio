@@ -5,6 +5,7 @@ import { UseCase } from "../usecase.interface";
 import { BusinessErrors } from '@business/errors';
 
 export interface GetOneUnitUseCaseInput {
+  companyId: string
   id: string
 }
 
@@ -12,14 +13,14 @@ export class GetOneUnitUseCase implements UseCase<GetOneUnitUseCaseInput, Promis
 
   private debug: Debugger
   
-  constructor(private UnitRepository: UnitRepository) {
+  constructor(private unitRepository: UnitRepository) {
     this.debug = debug('server::' +GetOneUnitUseCase.name)
   }
 
   async run(input: GetOneUnitUseCaseInput): Promise<UnitDto> {
     this.debug('Started', input)
 
-    const Unit = await this.UnitRepository.getOne(input.id)
+    const Unit = await this.unitRepository.getOne(input.companyId, input.id)
 
     if (!Unit) {
       throw new BusinessErrors.UnitErrors.UnitNotFoundError()

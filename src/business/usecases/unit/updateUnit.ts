@@ -15,20 +15,20 @@ export class UpdateUnitUseCase implements UseCase<UpdateUnitUseCaseInput, Promis
 
   private debug: Debugger
   
-  constructor(private UnitRepository: UnitRepository) {
+  constructor(private unitRepository: UnitRepository) {
     this.debug = debug('server::' +UpdateUnitUseCase.name)
   }
 
   async run(input: UpdateUnitUseCaseInput): Promise<UnitDto> {
     this.debug('Started', input)
 
-    const Unit = await this.UnitRepository.getOne(input.id)
+    const Unit = await this.unitRepository.getOne(input.companyId, input.id)
 
     if (!Unit) {
       throw new BusinessErrors.UnitErrors.UnitNotFoundError
     }
 
-    const updatedUnit = await this.UnitRepository.update(input.companyId, input.id, input.data)
+    const updatedUnit = await this.unitRepository.update(input.companyId, input.id, input.data)
 
     this.debug('Finished')
     return UnitDto.fromEntity(updatedUnit)

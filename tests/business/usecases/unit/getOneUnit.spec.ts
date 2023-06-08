@@ -7,6 +7,7 @@ import { BusinessErrors } from '../../../../src/business/errors'
 describe("#GetOneUnitUseCase", () => {
 
   const input: GetOneUnitUseCaseInput = {
+    companyId: 'abc',
     id: '123abc'
   }
 
@@ -22,7 +23,7 @@ describe("#GetOneUnitUseCase", () => {
   test('should call repository with correct params', async () => {
     unitRepository.getOne.mockResolvedValueOnce(fixtureUnit)
     await usecase.run(input)
-    expect(unitRepository.getOne).toBeCalledWith(input.id)
+    expect(unitRepository.getOne).toBeCalledWith(input.companyId, input.id)
   })
 
   test('should get one Unit with success', async () => {

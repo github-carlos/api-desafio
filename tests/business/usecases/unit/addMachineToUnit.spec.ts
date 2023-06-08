@@ -8,6 +8,7 @@ import { Machine, MachineStatusEnum, Unit } from '../../../../src/domain/entitie
 describe("#AddMachineToUnitUseCase", () => {
 
   const input: AddMachineToUnitUseCaseInput = {
+    companyId: 'abd3',
     unitId: 'abcd',
     machine: {
       name: 'New Machine',
@@ -20,7 +21,6 @@ describe("#AddMachineToUnitUseCase", () => {
   }
 
   const fixtureUnit = buildUnitFixture()
-  const machineFixture = buildMachineFixture()
 
   const unitRepository = buildDefaultRepositoryMock()
   const machineRepository = buildDefaultRepositoryMock<Machine>()
@@ -37,7 +37,7 @@ describe("#AddMachineToUnitUseCase", () => {
 
     expect(addedMachine.unitId).toBe(input.unitId)
     expect(addedMachine.id).not.toBeUndefined()
-    expect(unitRepository.getOne).toBeCalledWith(input.unitId)
+    expect(unitRepository.getOne).toBeCalledWith(input.companyId, input.unitId)
     expect(machineRepository.save).toBeCalledWith({...input.machine, unitId: input.unitId, id: expect.any(String)})
   })
   test('should throw error when unit not found', async () => {

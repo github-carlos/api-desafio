@@ -6,6 +6,7 @@ import { MachineDto } from '@business/dtos';
 import { BusinessErrors } from '@business/errors';
 
 export interface AddMachineToUnitUseCaseInput {
+  companyId: string
   unitId: string
   machine: Omit<Machine, 'unitId'>
 }
@@ -21,7 +22,7 @@ export class AddMachineToUnitUseCase implements UseCase<AddMachineToUnitUseCaseI
   async run(input: AddMachineToUnitUseCaseInput): Promise<MachineDto> {
     this.debug('START', input)
     
-    const unit = await this.unitRepository.getOne(input.unitId)
+    const unit = await this.unitRepository.getOne(input.companyId, input.unitId)
 
     if (!unit) {
       throw new BusinessErrors.UnitErrors.UnitNotFoundError()

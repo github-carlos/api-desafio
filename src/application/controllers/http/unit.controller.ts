@@ -72,7 +72,7 @@ export class UnitHttpController implements UnitController<Promise<HttpResponse>>
       try {
         const success = await this.deleteOneUnitUseCase.run({companyId, id})
 
-        return {data: { success }, status: success ? 200 : 500 }
+        return {data: { success }, status: success ? 200 : 404 }
       } catch(err) {
         this.debug('Error deleting Unit', err)
         return errorHandler(err)

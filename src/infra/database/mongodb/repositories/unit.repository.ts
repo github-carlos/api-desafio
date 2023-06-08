@@ -57,9 +57,11 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   async delete(companyId: string, id: string): Promise<boolean> {
     this.debug('Deleting Unit')
     try {
-      const units: any = await this.companyModel.findOneAndUpdate({id: companyId}, { $pull: {units: {id}} })
+      const result = await this.companyModel.findOneAndUpdate({id: companyId, 'units.id': id}, { $pull: {units: {id}} }, { new: true })
 
-      return true
+      this.debug('Removed Unit', result)
+
+      return !!result
     } catch(err) {
       this.debug('Error deleting Unit', err)
       throw new InfraErrors.DataBaseErrors.OperationError()

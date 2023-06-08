@@ -70,8 +70,16 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   async update(companyId: string, id: string, data: Partial<Unit>): Promise<Unit> {
     this.debug('Updating Unit')
     try {
-      const updatedData = await this.companyModel.findOneAndUpdate({id: companyId, 'units.id': id}, { $set: { 'units.$': data} })
-      return this.toUnitEntity(companyId, updatedData.toJSON())
+
+      const updatedData: any = await this.companyModel.findOneAndUpdate({id: companyId, 'units.id': id}, { $set: { 'units.$': data} }, { new: true })
+
+      this.debug('Updated Data', updatedData)
+
+      if (!updatedData) return null
+
+      const unit = updatedData.units.find((unit) => unit.id === id)
+
+      return this.toUnitEntity(companyId, unit.toJSON())
     } catch(err) {
       this.debug('Error updating Unit data', err)
       throw new InfraErrors.DataBaseErrors.OperationError()

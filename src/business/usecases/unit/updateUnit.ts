@@ -22,13 +22,13 @@ export class UpdateUnitUseCase implements UseCase<UpdateUnitUseCaseInput, Promis
   async run(input: UpdateUnitUseCaseInput): Promise<UnitDto> {
     this.debug('Started', input)
 
-    const Unit = await this.unitRepository.getOne(input.companyId, input.id)
+    const unit = await this.unitRepository.getOne(input.companyId, input.id)
 
-    if (!Unit) {
+    if (!unit) {
       throw new BusinessErrors.UnitErrors.UnitNotFoundError
     }
 
-    const updatedUnit = await this.unitRepository.update(input.companyId, input.id, input.data)
+    const updatedUnit = await this.unitRepository.update(input.companyId, input.id, {...unit, ...input.data})
 
     this.debug('Finished')
     return UnitDto.fromEntity(updatedUnit)

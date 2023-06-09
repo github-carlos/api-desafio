@@ -54,7 +54,7 @@ export class UnitHttpController implements UnitController<Promise<HttpResponse>>
       }
     }
 
-    async updateUnit(companyId: string, id: string, data: Partial<UnitDto>): Promise<HttpResponse> {
+    async updateUnit(companyId: string, id: string, data: Partial<Omit<UnitDto, 'machines'>>): Promise<HttpResponse> {
       this.debug('Updating One Unit')
       try {
 

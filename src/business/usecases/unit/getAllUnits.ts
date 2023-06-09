@@ -28,6 +28,6 @@ export class GetAllUnitsUseCase implements UseCase<GetAllUnitsUseCaseInput, Prom
     const units = await this.unitsRepository.getAll(input.companyId)
 
     this.debug('Finished')
-    return units.map((Units) => UnitDto.fromEntity(Units))
+    return units.map((unit) => UnitDto.fromEntity(unit))
   }
 }

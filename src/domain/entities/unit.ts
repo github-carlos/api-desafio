@@ -1,8 +1,9 @@
 import { Address } from "@domain/valueObjects";
 import { DomainErrors } from "@domain/errors";
+import { Machine } from "./machine";
 
 export class Unit {
-  constructor(public companyId: string, public address: Address, public id?: string) {
+  constructor(public companyId: string, public address: Address, public id?: string, public machines?: Array<Machine>) {
     this.validate()
   }
 

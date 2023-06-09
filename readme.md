@@ -13,6 +13,7 @@ Voce pode testar a api rodando localmente
 ```ssh
 docker-compose up
 ```
+É possível visualizar os dados em banco através do *http://localhost:28081/*
 
 ## Ferramentas Utilizadas
 * [Nodejs](https://nodejs.org/en/) -> Runtime JavaScript

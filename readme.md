@@ -11,7 +11,7 @@
 ## Test Drive
 Voce pode testar a api rodando localmente
 ```ssh
-docker-compose up -d
+docker-compose up
 ```
 
 ## Ferramentas Utilizadas

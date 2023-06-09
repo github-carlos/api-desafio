@@ -27,7 +27,9 @@ export class UpdateCompanyUseCase implements UseCase<UpdateCompanyUseCaseInput, 
       throw new BusinessErrors.CompanyErrors.CompanyNotFoundError
     }
 
-    const updatedCompany = await this.companyRepository.update(input.id, input.data)
+    const newDataCompany = new Company(input.data.name ?? company.name, input.data.description ?? company.description, company.id)
+
+    const updatedCompany = await this.companyRepository.update(input.id, newDataCompany)
 
     this.debug('Finished')
     return CompanyDto.fromEntity(updatedCompany)

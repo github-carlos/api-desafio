@@ -84,13 +84,24 @@ export class UnitRepositoryMongoDb implements UnitRepository {
     this.debug('Updating Unit')
     try {
 
-      const updatedData: any = await this.companyModel.findOneAndUpdate({ _id: companyId, 'units._id': id }, { $set: { 'units.$': { ...data, _id: id } } }, { new: true })
+      const company: any = await this.companyModel
+        .findOne({ 'units._id': id }, { "units.$": 1 })
+        .populate({ path: 'units.machines', model: 'Machine' })
+
+      const oldData = company.units[0]
+
+      const updatedData: any = await this.companyModel
+        .findOneAndUpdate({ _id: companyId, 'units._id': id },
+          { $set: { 'units.$': { address: { ...oldData.address, ...data.address },
+          machines: oldData.machines, _id: id } } }, { new: true })
 
       this.debug('Updated Data', updatedData)
 
       if (!updatedData) return null
 
       const unit = updatedData.units.find((unit) => unit._id.toString() === id)
+
+      unit.machines = undefined
 
       return this.toUnitEntity(companyId, unit.toJSON())
     } catch (err) {
@@ -115,7 +126,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
             id: machine.id,
             image: machine.image,
             status: machine.status
-          })) : null
+          })) : undefined
     )
   }
 }

@@ -1,0 +1,639 @@
+{
+	"info": {
+		"_postman_id": "1234ffee-ca08-46e5-9a3b-db3f7f356e3a",
+		"name": "Tractian-Desafio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Unit",
+					"item": [
+						{
+							"name": "Machine",
+							"item": [
+								{
+									"name": "Add Machine",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/Users/carlos/Downloads/WhatsApp Image 2022-11-24 at 10.10.22.jpeg"
+												},
+												{
+													"key": "name",
+													"value": "Machine Name",
+													"type": "default"
+												},
+												{
+													"key": "model[name]",
+													"value": "Model 1",
+													"type": "default"
+												},
+												{
+													"key": "model[description]",
+													"value": "Model description",
+													"type": "default"
+												},
+												{
+													"key": "description",
+													"value": "Machine description",
+													"type": "default"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/6482566313952ff36c6aa5ec/machines"
+									},
+									"response": []
+								},
+								{
+									"name": "Get One Machine",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [],
+													"disabled": true
+												},
+												{
+													"key": "name",
+													"value": "Machine Name",
+													"type": "default"
+												},
+												{
+													"key": "model",
+													"value": "Model 1",
+													"type": "default"
+												},
+												{
+													"key": "description",
+													"value": "Machine description",
+													"type": "default"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/6482566313952ff36c6aa5ec/machines/6483406269b2ac4f962fc350"
+									},
+									"response": []
+								},
+								{
+									"name": "Get One Machine Image",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [],
+													"disabled": true
+												},
+												{
+													"key": "name",
+													"value": "Machine Name",
+													"type": "default"
+												},
+												{
+													"key": "model",
+													"value": "Model 1",
+													"type": "default"
+												},
+												{
+													"key": "description",
+													"value": "Machine description",
+													"type": "default"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/6482566313952ff36c6aa5ec/machines/6483406269b2ac4f962fc350/image"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete one machine",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [],
+													"disabled": true
+												},
+												{
+													"key": "name",
+													"value": "Machine Name",
+													"type": "default"
+												},
+												{
+													"key": "model",
+													"value": "Model 1",
+													"type": "default"
+												},
+												{
+													"key": "description",
+													"value": "Machine description",
+													"type": "default"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/6482566313952ff36c6aa5ec/machines/648338af19873951115dae9a"
+									},
+									"response": []
+								},
+								{
+									"name": "Update one machine",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [],
+													"disabled": true
+												},
+												{
+													"key": "name",
+													"value": "Machine new name 1",
+													"type": "default",
+													"disabled": true
+												},
+												{
+													"key": "model[name]",
+													"value": "Model 1",
+													"type": "default"
+												},
+												{
+													"key": "description",
+													"value": "new description",
+													"type": "default"
+												},
+												{
+													"key": "status",
+													"value": "Running",
+													"type": "default"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{local}}/companies/64820a93b3452cbfaa403198/units/64820b8802f9146cc3d433b2/machines/648257b6cdfba2c3ba1ace7d"
+									},
+									"response": []
+								},
+								{
+									"name": "Get All Machine",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "default"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [],
+													"disabled": true
+												},
+												{
+													"key": "name",
+													"value": "Machine Name",
+													"type": "default"
+												},
+												{
+													"key": "model",
+													"value": "Model 1",
+													"type": "default"
+												},
+												{
+													"key": "description",
+													"value": "Machine description",
+													"type": "default"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/6482566313952ff36c6aa5ec/machines"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get One Unit",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/6483355b76a6e7f761313ec9"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete One Unit",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/648320ba5535924b7565226d"
+							},
+							"response": []
+						},
+						{
+							"name": "Add Unit",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"address\": {\"street\": \"Rua 20\"}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Unit",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"address\": {\"street\": \"Rua A 5aaa\"}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units/6483355b76a6e7f761313ec9"
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Units",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{local}}/companies/6482565913952ff36c6aa5ea/units"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Add Company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Company 8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/companies"
+					},
+					"response": []
+				},
+				{
+					"name": "Update One Company",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/companies/6482565913952ff36c6aa5ea"
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Company",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Company\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/companies/6482565913952ff36c6aa5ea"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Companies",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Company\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/companies"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one company",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Company\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/companies/64820b1802f9146cc3d4339f"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Add User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyId\": \"648320525535924b7565225c\",\n    \"username\": \"Carlos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update One User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Carlos Eduardo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/users/648322015535924b756522b0"
+					},
+					"response": []
+				},
+				{
+					"name": "Get One User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Company\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/users/648322015535924b756522b0"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Company\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Company\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/users/648322015535924b756522b0"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local",
+			"value": "localhost:80",
+			"type": "default"
+		}
+	]
+}

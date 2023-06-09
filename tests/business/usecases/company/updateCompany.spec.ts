@@ -26,7 +26,7 @@ describe("#UpdateCompanyUseCase", () => {
     companyRepository.getOne.mockResolvedValueOnce(fixtureOldDataCompany)
 
     await usecase.run(input)
-    expect(companyRepository.update).toBeCalledWith(input.id, input.data)
+    expect(companyRepository.update).toBeCalledWith(input.id, {...fixtureOldDataCompany, ...input.data})
   })
 
   test('should update company with success', async () => {

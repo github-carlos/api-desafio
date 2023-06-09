@@ -5,6 +5,7 @@ import { InfraErrors } from '@infra/errors';
 import { Address } from '@domain/valueObjects';
 import { CompanyMongooseModel } from '../schemas'
 import { Types } from 'mongoose';
+import { BusinessErrors } from '@business/errors';
 
 export class UnitRepositoryMongoDb implements UnitRepository {
 
@@ -23,6 +24,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
       return this.toUnitEntity(unit.companyId, {...unit, _id})
     } catch(err) {
       this.debug('Error saving model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.UnitNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -45,6 +47,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
       return this.toUnitEntity(companyId, unit.toJSON())
     } catch(err) {
       this.debug('Error getting model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.UnitNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -57,6 +60,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
       return units.map((unit) => this.toUnitEntity(companyId, unit))
     } catch(err) {
       this.debug('Error getting all Units', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.UnitNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -70,6 +74,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
       return !!result
     } catch(err) {
       this.debug('Error deleting Unit', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.UnitNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -88,6 +93,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
       return this.toUnitEntity(companyId, unit.toJSON())
     } catch(err) {
       this.debug('Error updating Unit data', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.UnitNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }

@@ -3,6 +3,7 @@ import { MachineRepositoryMongoDb } from '../../../../../src/infra/database/mong
 import { CompanyMongooseModel, MachineMongooseModel } from '../../../../../src/infra/database/mongodb/schemas'
 import { InfraErrors } from '../../../../../src/infra/errors'
 import { Machine } from "../../../../../src/domain/entities"
+import { BusinessErrors } from "../../../../../src/business/errors"
 
 describe('#MachineRepositoryMongoDb', () => {
 
@@ -52,6 +53,14 @@ describe('#MachineRepositoryMongoDb', () => {
 
       expect(foundMachine).toBeNull()
     })
+
+    test('should throw machine not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(MachineMongooseModel, 'findOne' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.getOne(machine.unitId, machine.id!)).rejects.toStrictEqual(new BusinessErrors.UnitErrors.MachineNotFoundError())
+    })
+
     test('should throw error when database query fails', async () => {
       const modelSpy = jest.spyOn(MachineMongooseModel, 'findOne')
       modelSpy.mockRejectedValueOnce('some error')
@@ -74,6 +83,14 @@ describe('#MachineRepositoryMongoDb', () => {
       expect(companySpy).toBeCalledTimes(1)
       expect(companySpy).toBeCalledWith({'units._id': unitId}, {"units.$": 1})
       expect(companyModelMock.populate).toBeCalledWith({"model": "Machine", "path": "units.machines"})
+    })
+
+    test('should throw machinenot found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'findOne' as any)
+      const companyModelMock = { populate: jest.fn().mockRejectedValueOnce({kind: 'ObjectId'}) }
+      modelSpy.mockReturnValueOnce(companyModelMock)
+
+      await expect(repository.getAll(unitId)).rejects.toStrictEqual(new BusinessErrors.UnitErrors.MachineNotFoundError())
     })
 
     test('should throw error when database query fails', async () => {
@@ -105,6 +122,13 @@ describe('#MachineRepositoryMongoDb', () => {
       expect(deleted).toBeFalsy()
     })
 
+    test('should throw machinenot found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(MachineMongooseModel, 'deleteOne' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.delete(machine.id!)).rejects.toStrictEqual(new BusinessErrors.UnitErrors.MachineNotFoundError())
+    })
+
     test('should throw error when database query fails', async () => {
       const modelSpy = jest.spyOn(MachineMongooseModel, 'deleteOne')
       modelSpy.mockRejectedValueOnce('some error')
@@ -125,6 +149,13 @@ describe('#MachineRepositoryMongoDb', () => {
 
       expect(updatedMachine.name).toBe(data.name)
       expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should throw machinenot found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(MachineMongooseModel, 'findOneAndUpdate' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.update(machine.unitId, machine.id!, data)).rejects.toStrictEqual(new BusinessErrors.UnitErrors.MachineNotFoundError())
     })
 
     test('should throw error when database query fails', async () => {

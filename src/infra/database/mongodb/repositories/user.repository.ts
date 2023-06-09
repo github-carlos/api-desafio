@@ -3,6 +3,7 @@ import { UserRepository } from "@business/repositories";
 import { User } from "@domain/entities";
 import { Model } from 'mongoose';
 import { InfraErrors } from '@infra/errors';
+import { BusinessErrors } from '@business/errors';
 
 export class UserRepositoryMongoDb implements UserRepository {
 
@@ -20,6 +21,7 @@ export class UserRepositoryMongoDb implements UserRepository {
       return this.toUserEntity(savedUser.toJSON())
     } catch(err) {
       this.debug('Error saving model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UserErrors.UserNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -36,6 +38,7 @@ export class UserRepositoryMongoDb implements UserRepository {
       return this.toUserEntity(user.toJSON())
     } catch(err) {
       this.debug('Error getting model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UserErrors.UserNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -48,6 +51,7 @@ export class UserRepositoryMongoDb implements UserRepository {
       return companies.map((user) => this.toUserEntity(user.toJSON()))
     } catch(err) {
       this.debug('Error getting all companies', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UserErrors.UserNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -58,6 +62,7 @@ export class UserRepositoryMongoDb implements UserRepository {
       return deleted.deletedCount > 0
     } catch(err) {
       this.debug('Error deleting User', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UserErrors.UserNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -68,6 +73,7 @@ export class UserRepositoryMongoDb implements UserRepository {
       return this.toUserEntity(updatedData.toJSON())
     } catch(err) {
       this.debug('Error updating User data', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UserErrors.UserNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }

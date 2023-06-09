@@ -1,10 +1,11 @@
 import { Debugger, debug } from 'debug'
 import { MachineRepository } from "@business/repositories";
 import { Machine } from "@domain/entities";
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { InfraErrors } from '@infra/errors';
 import { MachineModel } from '@domain/valueObjects';
 import { CompanyMongooseModel } from '../schemas';
+import { BusinessErrors } from '@business/errors';
 
 export class MachineRepositoryMongoDb implements MachineRepository {
 
@@ -23,6 +24,7 @@ export class MachineRepositoryMongoDb implements MachineRepository {
       return this.toMachineEntity({...savedMachine.toJSON(), unitId: machine.unitId})
     } catch (err) {
       this.debug('Error saving model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.MachineNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -39,6 +41,7 @@ export class MachineRepositoryMongoDb implements MachineRepository {
       return this.toMachineEntity({...machine.toJSON(), unitId})
     } catch (err) {
       this.debug('Error getting model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.MachineNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -58,6 +61,7 @@ export class MachineRepositoryMongoDb implements MachineRepository {
       return machines.map((machine) => this.toMachineEntity({...machine.toJSON(), unitId}))
     } catch (err) {
       this.debug('Error getting all companies', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.MachineNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -68,6 +72,7 @@ export class MachineRepositoryMongoDb implements MachineRepository {
       return deleted.deletedCount > 0
     } catch (err) {
       this.debug('Error deleting Machine', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.MachineNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -78,6 +83,7 @@ export class MachineRepositoryMongoDb implements MachineRepository {
       return this.toMachineEntity({...updatedData.toJSON(), unitId})
     } catch (err) {
       this.debug('Error updating Machine data', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.UnitErrors.MachineNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }

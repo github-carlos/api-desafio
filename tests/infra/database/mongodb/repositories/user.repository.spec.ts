@@ -3,6 +3,7 @@ import { UserRepositoryMongoDb } from '../../../../../src/infra/database/mongodb
 import { UserMongooseModel } from '../../../../../src/infra/database/mongodb/schemas'
 import { InfraErrors } from '../../../../../src/infra/errors'
 import { User } from "../../../../../src/domain/entities"
+import { BusinessErrors } from "../../../../../src/business/errors"
 
 describe('#UserRepositoryMongoDb', () => {
 
@@ -17,6 +18,13 @@ describe('#UserRepositoryMongoDb', () => {
       await repository.save(user)
 
       expect(modelSpy).toBeCalledWith(user)
+    })
+
+    test('should throw user not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(UserMongooseModel, 'create' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.save(user)).rejects.toStrictEqual(new BusinessErrors.UserErrors.UserNotFoundError())
     })
 
     test('should throw error when database fails', async () => {
@@ -50,6 +58,14 @@ describe('#UserRepositoryMongoDb', () => {
 
       expect(foundUser).toBeNull()
     })
+
+    test('should throw user not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(UserMongooseModel, 'findOne' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.getOne(user.id!)).rejects.toStrictEqual(new BusinessErrors.UserErrors.UserNotFoundError())
+    })
+
     test('should throw error when database query fails', async () => {
       const modelSpy = jest.spyOn(UserMongooseModel, 'findOne')
       modelSpy.mockRejectedValueOnce('some error')
@@ -68,6 +84,13 @@ describe('#UserRepositoryMongoDb', () => {
 
       expect(companies.length).toBe(1)
       expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should throw user not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(UserMongooseModel, 'find' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.getAll()).rejects.toStrictEqual(new BusinessErrors.UserErrors.UserNotFoundError())
     })
 
     test('should throw error when database query fails', async () => {
@@ -99,6 +122,13 @@ describe('#UserRepositoryMongoDb', () => {
       expect(deleted).toBeFalsy()
     })
 
+    test('should throw user not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(UserMongooseModel, 'deleteOne' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.delete(user.id!)).rejects.toStrictEqual(new BusinessErrors.UserErrors.UserNotFoundError())
+    })
+
     test('should throw error when database query fails', async () => {
       const modelSpy = jest.spyOn(UserMongooseModel, 'deleteOne')
       modelSpy.mockRejectedValueOnce('some error')
@@ -119,6 +149,13 @@ describe('#UserRepositoryMongoDb', () => {
 
       expect(updatedUser.username).toBe(data.username)
       expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should throw user not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(UserMongooseModel, 'findOneAndUpdate' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.update(user.id!, data)).rejects.toStrictEqual(new BusinessErrors.UserErrors.UserNotFoundError())
     })
 
     test('should throw error when database query fails', async () => {

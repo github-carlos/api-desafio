@@ -1,5 +1,5 @@
 import { DomainError } from "@domain/errors/error.interface";
-import { BusinessError, EntityNotFoundError } from "@business/errors/error.interface";
+import { EntityNotFoundError } from "@business/errors/error.interface";
 import { HttpResponse } from "../dtos/httpResponse.dto";
 import { HttpErrors } from ".";
 import { debug } from "debug";

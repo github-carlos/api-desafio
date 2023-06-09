@@ -1,4 +1,3 @@
-import * as createError from 'http-errors'
 import { debug, Debugger } from 'debug'
 import express from 'express'
 import logger from 'morgan'

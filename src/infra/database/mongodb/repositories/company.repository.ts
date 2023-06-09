@@ -3,6 +3,7 @@ import { CompanyRepository } from "@business/repositories";
 import { Company } from "@domain/entities";
 import { Model } from 'mongoose';
 import { InfraErrors } from '@infra/errors';
+import { BusinessErrors } from '@business/errors';
 
 export class CompanyRepositoryMongoDb implements CompanyRepository {
 
@@ -20,6 +21,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
       return this.toCompanyEntity(savedCompany.toJSON())
     } catch(err) {
       this.debug('Error saving model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.CompanyErrors.CompanyNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -36,6 +38,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
       return this.toCompanyEntity(company.toJSON())
     } catch(err) {
       this.debug('Error getting model', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.CompanyErrors.CompanyNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -48,6 +51,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
       return companies.map((company) => this.toCompanyEntity(company.toJSON()))
     } catch(err) {
       this.debug('Error getting all companies', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.CompanyErrors.CompanyNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -58,6 +62,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
       return deleted.deletedCount > 0
     } catch(err) {
       this.debug('Error deleting company', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.CompanyErrors.CompanyNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
@@ -68,6 +73,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
       return this.toCompanyEntity(updatedData.toJSON())
     } catch(err) {
       this.debug('Error updating company data', err)
+      if (err.kind === 'ObjectId') throw new BusinessErrors.CompanyErrors.CompanyNotFoundError()
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }

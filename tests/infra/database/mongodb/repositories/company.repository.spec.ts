@@ -2,6 +2,7 @@ import { buildCompanyFixture } from "../../../../fixtures/companyFixture.factory
 import { CompanyRepositoryMongoDb } from '../../../../../src/infra/database/mongodb/repositories'
 import { CompanyMongooseModel } from '../../../../../src/infra/database/mongodb/schemas'
 import { InfraErrors } from '../../../../../src/infra/errors'
+import { BusinessErrors } from '../../../../../src/business/errors'
 import { Company } from "../../../../../src/domain/entities"
 
 describe('#CompanyRepositoryMongoDb', () => {
@@ -18,6 +19,13 @@ describe('#CompanyRepositoryMongoDb', () => {
 
       expect(modelSpy).toBeCalledWith(company)
       expect(savedCompany).not.toBeNull()
+    })
+
+    test('should throw company not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'create' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.save(company)).rejects.toStrictEqual(new BusinessErrors.CompanyErrors.CompanyNotFoundError())
     })
 
     test('should throw error when database fails', async () => {
@@ -51,6 +59,14 @@ describe('#CompanyRepositoryMongoDb', () => {
 
       expect(foundCompany).toBeNull()
     })
+
+    test('should throw company not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'findOne' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.getOne(company.id!)).rejects.toStrictEqual(new BusinessErrors.CompanyErrors.CompanyNotFoundError())
+    })
+
     test('should throw error when database query fails', async () => {
       const modelSpy = jest.spyOn(CompanyMongooseModel, 'findOne')
       modelSpy.mockRejectedValueOnce('some error')
@@ -71,6 +87,13 @@ describe('#CompanyRepositoryMongoDb', () => {
       expect(modelSpy).toBeCalledTimes(1)
     })
 
+    test('should throw company not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'find' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.getAll()).rejects.toStrictEqual(new BusinessErrors.CompanyErrors.CompanyNotFoundError())
+    })
+
     test('should throw error when database query fails', async () => {
       const modelSpy = jest.spyOn(CompanyMongooseModel, 'find')
       modelSpy.mockRejectedValueOnce('some error')
@@ -88,6 +111,13 @@ describe('#CompanyRepositoryMongoDb', () => {
       const deleted = await repository.delete(company.id!)
 
       expect(deleted).toBeTruthy()
+    })
+
+    test('should throw company not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'deleteOne' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.delete(company.id!)).rejects.toStrictEqual(new BusinessErrors.CompanyErrors.CompanyNotFoundError())
     })
 
     test('should return false when delete a company with no success', async () => {
@@ -119,6 +149,13 @@ describe('#CompanyRepositoryMongoDb', () => {
 
       expect(updatedCompany.name).toBe(data.name)
       expect(modelSpy).toBeCalledTimes(1)
+    })
+
+    test('should throw company not found error when object id is invalid', async () => {
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'findByIdAndUpdate' as any)
+      modelSpy.mockRejectedValueOnce({kind: 'ObjectId'})
+
+      await expect(repository.update(company.id!, data)).rejects.toStrictEqual(new BusinessErrors.CompanyErrors.CompanyNotFoundError())
     })
 
     test('should throw error when database query fails', async () => {

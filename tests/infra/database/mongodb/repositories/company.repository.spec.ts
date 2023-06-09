@@ -11,12 +11,13 @@ describe('#CompanyRepositoryMongoDb', () => {
 
   describe('#save', () => {
     test('should call model save with correct args', async () => {
-      const modelSpy = jest.spyOn(CompanyMongooseModel, 'create')
-      modelSpy.mockResolvedValueOnce([])
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'create' as any)
+      modelSpy.mockResolvedValueOnce({toJSON: () => company})
 
-      await repository.save(company)
+      const savedCompany = await repository.save(company)
 
       expect(modelSpy).toBeCalledWith(company)
+      expect(savedCompany).not.toBeNull()
     })
 
     test('should throw error when database fails', async () => {
@@ -29,15 +30,15 @@ describe('#CompanyRepositoryMongoDb', () => {
 
   describe('#getOne', () => {
 
-    const mockedValue = { toJSON: () => ({ ...company }) }
+    const mockedValue = { toJSON: () => ({ ...company, _id: company.id }) }
 
     test('should call model with correct args and return a company', async () => {
-      const modelSpy = jest.spyOn(CompanyMongooseModel, 'findOne')
+      const modelSpy = jest.spyOn(CompanyMongooseModel, 'findById')
       modelSpy.mockResolvedValueOnce(mockedValue)
 
       const foundCompany = await repository.getOne(company.id!)
 
-      expect(modelSpy).toBeCalledWith({ id: company.id })
+      expect(modelSpy).toBeCalledWith(company.id)
       expect(foundCompany.id).toBe(company.id)
       expect(foundCompany).toBeInstanceOf(Company)
 

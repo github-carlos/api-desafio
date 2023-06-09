@@ -11,7 +11,6 @@ describe("#Unit", () => {
 
     expect(unit.companyId).toBe('12345')
     expect(unit.address).toStrictEqual(address)
-    expect(unit.id).not.toBeNull()
   })
 
   test('should instantiate Unit with given id and its properties', () => {

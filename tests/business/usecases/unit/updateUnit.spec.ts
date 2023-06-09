@@ -27,7 +27,7 @@ describe("#UpdateUnitUseCase", () => {
     unitRepository.getOne.mockResolvedValueOnce(fixtureOldDataUnit)
 
     await usecase.run(input)
-    expect(unitRepository.update).toBeCalledWith(input.companyId, input.id, input.data)
+    expect(unitRepository.update).toBeCalledWith(input.companyId, input.id, {...fixtureOldDataUnit, ...input.data})
   })
 
   test('should update Unit with success', async () => {

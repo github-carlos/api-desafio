@@ -11,7 +11,6 @@ describe("#User", () => {
 
     expect(user.username).toBe(username)
     expect(user.companyId).toBe(companyId)
-    expect(user.id).not.toBeNull()
   })
 
   test('should instantiate User with given id and its properties', () => {

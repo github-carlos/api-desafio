@@ -1,7 +1,7 @@
 import { User } from "@domain/entities";
 
 export interface UserRepository {
-  save(user: User): Promise<void>
+  save(user: User): Promise<User>
   getOne(id: string): Promise<User | null>
   getAll(): Promise<Array<User>>
   delete(id: string): Promise<boolean>

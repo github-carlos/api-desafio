@@ -25,7 +25,6 @@ describe("#Machine", () => {
     expect(machine.health).toBe(input.health)
     expect(machine.status).toBe(input.status)
     expect(machine.unitId).toBe(input.unitId)
-    expect(machine.id).not.toBeUndefined()
   })
 
   test('should instantiate Machine with given id', () => {

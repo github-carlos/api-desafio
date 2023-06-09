@@ -8,6 +8,7 @@ import { Machine, MachineStatusEnum, Unit } from '../../../../src/domain/entitie
 describe("#RemoveMachineFromUnitUseCase", () => {
 
   const input: RemoveMachineFromUnitUseCaseInput = {
+    unitId: 'abc',
     machineId: '123abc'
   }
 
@@ -27,7 +28,7 @@ describe("#RemoveMachineFromUnitUseCase", () => {
     const removed: boolean = await usecase.run(input)
 
     expect(removed).toBeTruthy()
-    expect(machineRepository.getOne).toBeCalledWith(input.machineId)
+    expect(machineRepository.getOne).toBeCalledWith(input.unitId, input.machineId)
     expect(machineRepository.delete).toBeCalledWith(input.machineId)
   })
 
@@ -38,7 +39,7 @@ describe("#RemoveMachineFromUnitUseCase", () => {
     const removed: boolean = await usecase.run(input)
 
     expect(removed).toBeFalsy()
-    expect(machineRepository.getOne).toBeCalledWith(input.machineId)
+    expect(machineRepository.getOne).toBeCalledWith(input.unitId, input.machineId)
     expect(machineRepository.delete).toBeCalledWith(input.machineId)
   })
 

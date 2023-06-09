@@ -25,6 +25,7 @@ describe("#AddMachineToUnitUseCase", () => {
   const unitRepository = buildDefaultRepositoryMock()
   const machineRepository = buildDefaultRepositoryMock<Machine>()
   const usecase = new AddMachineToUnitUseCase(machineRepository, unitRepository)
+  const machine = buildMachineFixture({...input.machine, unitId: input.unitId})
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -32,13 +33,14 @@ describe("#AddMachineToUnitUseCase", () => {
 
   test('should add machine to unit with success', async () => {
     unitRepository.getOne.mockResolvedValueOnce(fixtureUnit)
+    machineRepository.save.mockResolvedValueOnce({...machine, id: '123'})
 
     const addedMachine: MachineDto = await usecase.run(input)
 
     expect(addedMachine.unitId).toBe(input.unitId)
     expect(addedMachine.id).not.toBeUndefined()
     expect(unitRepository.getOne).toBeCalledWith(input.companyId, input.unitId)
-    expect(machineRepository.save).toBeCalledWith({...input.machine, unitId: input.unitId, id: expect.any(String)})
+    expect(machineRepository.save).toBeCalledWith({...input.machine, unitId: input.unitId})
   })
   test('should throw error when unit not found', async () => {
     unitRepository.getOne.mockResolvedValueOnce(null)

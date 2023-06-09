@@ -11,8 +11,8 @@ describe('#UserRepositoryMongoDb', () => {
 
   describe('#save', () => {
     test('should call model save with correct args', async () => {
-      const modelSpy = jest.spyOn(UserMongooseModel, 'create')
-      modelSpy.mockResolvedValueOnce([])
+      const modelSpy = jest.spyOn(UserMongooseModel, 'create' as any)
+      modelSpy.mockResolvedValueOnce({toJSON: () => user})
 
       await repository.save(user)
 
@@ -29,15 +29,15 @@ describe('#UserRepositoryMongoDb', () => {
 
   describe('#getOne', () => {
 
-    const mockedValue = { toJSON: () => ({ ...user }) }
+    const mockedValue = { toJSON: () => ({ ...user, _id: user.id }) }
 
     test('should call model with correct args and return a User', async () => {
-      const modelSpy = jest.spyOn(UserMongooseModel, 'findOne')
+      const modelSpy = jest.spyOn(UserMongooseModel, 'findById')
       modelSpy.mockResolvedValueOnce(mockedValue)
 
       const foundUser = await repository.getOne(user.id!)
 
-      expect(modelSpy).toBeCalledWith({ id: user.id })
+      expect(modelSpy).toBeCalledWith(user.id)
       expect(foundUser.id).toBe(user.id)
       expect(foundUser).toBeInstanceOf(User)
 

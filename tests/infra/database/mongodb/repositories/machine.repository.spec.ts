@@ -11,8 +11,10 @@ describe('#MachineRepositoryMongoDb', () => {
 
   describe('#save', () => {
     test('should call model save with correct args', async () => {
-      const modelSpy = jest.spyOn(MachineMongooseModel, 'create')
-      modelSpy.mockResolvedValueOnce([])
+      const modelSpy = jest.spyOn(MachineMongooseModel, 'create' as any)
+      const mockCompanyModel = jest.spyOn(CompanyMongooseModel, 'findOneAndUpdate')
+      modelSpy.mockResolvedValueOnce({toJSON: () => machine})
+      mockCompanyModel.mockResolvedValueOnce({})
 
       await repository.save(machine)
 
@@ -32,12 +34,12 @@ describe('#MachineRepositoryMongoDb', () => {
     const mockedValue = { toJSON: () => ({ ...machine }) }
 
     test('should call model with correct args and return a Machine', async () => {
-      const modelSpy = jest.spyOn(MachineMongooseModel, 'findOne')
+      const modelSpy = jest.spyOn(MachineMongooseModel, 'findById')
       modelSpy.mockResolvedValueOnce(mockedValue)
 
-      const foundMachine = await repository.getOne(machine.id!)
+      const foundMachine = await repository.getOne(machine.unitId, machine.id!)
 
-      expect(modelSpy).toBeCalledWith({ id: machine.id })
+      expect(modelSpy).toBeCalledWith(machine.id)
       expect(foundMachine.id).toBe(machine.id)
       expect(foundMachine).toBeInstanceOf(Machine)
 
@@ -46,7 +48,7 @@ describe('#MachineRepositoryMongoDb', () => {
       const modelSpy = jest.spyOn(MachineMongooseModel, 'findOne')
       modelSpy.mockResolvedValueOnce(null)
 
-      const foundMachine = await repository.getOne(machine.id!)
+      const foundMachine = await repository.getOne(machine.unitId, machine.id!)
 
       expect(foundMachine).toBeNull()
     })
@@ -54,25 +56,24 @@ describe('#MachineRepositoryMongoDb', () => {
       const modelSpy = jest.spyOn(MachineMongooseModel, 'findOne')
       modelSpy.mockRejectedValueOnce('some error')
 
-      await expect(repository.getOne(machine.id!)).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
+      await expect(repository.getOne(machine.unitId, machine.id!)).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
     })
   })
 
   describe("#getAll", () => {
-
-    const companyModelMock = { populate: jest.fn().mockReturnValue({ select: () => [{ toJSON: () => machine }] }) }
+    const companyModelMock = { populate: jest.fn().mockReturnValue({units: [{machines: [{toJSON: () => machine}]}]}) }
 
     const unitId = machine.unitId
     test('should return all companies with success', async () => {
-      const companySpy = jest.spyOn(CompanyMongooseModel, 'findOne')
-      companySpy.mockReturnValueOnce(companyModelMock as any)
+      const companySpy = jest.spyOn(CompanyMongooseModel, 'findOne' as any)
+      companySpy.mockReturnValueOnce(companyModelMock)
 
       const machines = await repository.getAll(unitId)
 
       expect(machines.length).toBe(1)
       expect(companySpy).toBeCalledTimes(1)
-      expect(companySpy).toBeCalledWith({'units.id': unitId})
-      expect(companyModelMock.populate).toBeCalledWith('machines')
+      expect(companySpy).toBeCalledWith({'units._id': unitId}, {"units.$": 1})
+      expect(companyModelMock.populate).toBeCalledWith({"model": "Machine", "path": "units.machines"})
     })
 
     test('should throw error when database query fails', async () => {
@@ -120,7 +121,7 @@ describe('#MachineRepositoryMongoDb', () => {
       const modelSpy = jest.spyOn(MachineMongooseModel, 'findOneAndUpdate')
       modelSpy.mockResolvedValueOnce({ toJSON: () => ({ ...machine, ...data }) })
 
-      const updatedMachine = await repository.update(machine.id!, data)
+      const updatedMachine = await repository.update(machine.unitId, machine.id!, data)
 
       expect(updatedMachine.name).toBe(data.name)
       expect(modelSpy).toBeCalledTimes(1)
@@ -129,7 +130,7 @@ describe('#MachineRepositoryMongoDb', () => {
     test('should throw error when database query fails', async () => {
       const modelSpy = jest.spyOn(MachineMongooseModel, 'findOneAndUpdate')
       modelSpy.mockRejectedValueOnce('some error')
-      await expect(repository.update(machine.id!, data)).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
+      await expect(repository.update(machine.unitId, machine.id!, data)).rejects.toStrictEqual(new InfraErrors.DataBaseErrors.OperationError())
     })
   })
 })

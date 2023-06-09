@@ -8,6 +8,7 @@ import { Machine, MachineStatusEnum, Unit } from '../../../../src/domain/entitie
 describe("#GetOneMachineFromUnitUseCase", () => {
 
   const input: GetOneMachineFromUnitUseCaseInput = {
+    unitId: 'abc',
     machineId: '123abc'
   }
 
@@ -26,7 +27,7 @@ describe("#GetOneMachineFromUnitUseCase", () => {
 
     const machine: MachineDto = await usecase.run(input)
 
-    expect(machineRepository.getOne).toBeCalledWith(input.machineId)
+    expect(machineRepository.getOne).toBeCalledWith(input.unitId, input.machineId)
     expect(machine.id).toBe(input.machineId)
   })
 

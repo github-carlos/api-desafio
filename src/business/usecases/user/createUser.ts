@@ -13,17 +13,17 @@ export class CreateUserUseCase implements UseCase<CreateUserUseCaseInput, Promis
 
   private debug: Debugger
   
-  constructor(private UserRepository: UserRepository) {
+  constructor(private userRepository: UserRepository) {
     this.debug = debug('server::' +CreateUserUseCase.name)
   }
 
   async run(input: CreateUserUseCaseInput): Promise<UserDto> {
     this.debug('Started', input)
 
-    const newUser = new User(input.companyId, input.username)
-    await this.UserRepository.save(newUser)
+    const newUserData = new User(input.companyId, input.username)
+    const savedUser = await this.userRepository.save(newUserData)
 
     this.debug('Finished')
-    return UserDto.fromEntity(newUser)
+    return UserDto.fromEntity(savedUser)
   }
 }

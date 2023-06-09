@@ -7,6 +7,7 @@ import { BusinessErrors } from '../../../../src/business/errors'
 describe("#UpdateMachineFromUnitUseCase", () => {
 
   const input: UpdateMachineFromUnitUseCaseInput = {
+    unitId: 'abc',
     id: '123abc',
     data: { name: 'New name' }
   }
@@ -25,8 +26,8 @@ describe("#UpdateMachineFromUnitUseCase", () => {
     machineRepository.getOne.mockResolvedValueOnce(fixtureMachine)
     machineRepository.update.mockResolvedValueOnce(fixtureNewMachineData)
     await usecase.run(input)
-    expect(machineRepository.getOne).toBeCalledWith(input.id)
-    expect(machineRepository.update).toBeCalledWith(input.id, input.data)
+    expect(machineRepository.getOne).toBeCalledWith(input.unitId, input.id)
+    expect(machineRepository.update).toBeCalledWith(input.unitId, input.id, {...fixtureMachine, ...input.data})
   })
 
   test('should update machine with success', async () => {

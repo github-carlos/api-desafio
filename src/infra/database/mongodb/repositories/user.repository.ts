@@ -12,11 +12,12 @@ export class UserRepositoryMongoDb implements UserRepository {
     this.debug = debug('server::' +UserRepositoryMongoDb.name)
   }
 
-  async save(User: User): Promise<void> {
+  async save(User: User): Promise<User> {
     this.debug('Saving model', User)
     try {
-      await this.model.create(User)
+      const savedUser = await this.model.create(User)
       this.debug('Saved')
+      return this.toUserEntity(savedUser.toJSON())
     } catch(err) {
       this.debug('Error saving model', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
@@ -26,13 +27,13 @@ export class UserRepositoryMongoDb implements UserRepository {
   async getOne(id: string): Promise<User> {
     this.debug('Getting model', id)
     try {
-      const User = await this.model.findById(id)
+      const user = await this.model.findById(id)
 
-      if (!User) {
+      if (!user) {
         return null
       }
 
-      return this.toUserEntity(User.toJSON())
+      return this.toUserEntity(user.toJSON())
     } catch(err) {
       this.debug('Error getting model', err)
       throw new InfraErrors.DataBaseErrors.OperationError()

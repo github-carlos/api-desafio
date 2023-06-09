@@ -21,9 +21,9 @@ export class CreateCompanyUseCase implements UseCase<CreateCompanyUseCaseInput, 
     this.debug('Started', input)
 
     const newCompany = new Company(input.name, input.description)
-    await this.companyRepository.save(newCompany)
+    const savedCompany = await this.companyRepository.save(newCompany)
 
     this.debug('Finished')
-    return CompanyDto.fromEntity(newCompany)
+    return CompanyDto.fromEntity(savedCompany)
   }
 }

@@ -1,7 +1,7 @@
 import { Unit } from "@domain/entities";
 
 export interface UnitRepository {
-  save(unit: Unit): Promise<void>
+  save(unit: Unit): Promise<Unit>
   getOne(companyId: string, id: string): Promise<Unit | null>
   getAll(companyId: string): Promise<Array<Unit>>
   delete(companyId: string, unitId: string): Promise<boolean>

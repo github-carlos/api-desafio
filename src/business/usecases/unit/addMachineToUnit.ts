@@ -29,10 +29,10 @@ export class AddMachineToUnitUseCase implements UseCase<AddMachineToUnitUseCaseI
     }
 
     const machine = new Machine({...input.machine, unitId: input.unitId})
-    await this.machineRepository.save(machine)
+    const addedMachine = await this.machineRepository.save(machine)
 
     this.debug('FINISH')
-    return MachineDto.fromEntity(machine)
+    return MachineDto.fromEntity(addedMachine)
   }
 
 }

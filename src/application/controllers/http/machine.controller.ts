@@ -30,12 +30,12 @@ export class MachineHttpController implements MachineController<Promise<HttpResp
       }
     }
 
-    async getOneMachine(machineId: string): Promise<HttpResponse> {
+    async getOneMachine(unitId: string, machineId: string): Promise<HttpResponse> {
       this.debug('Getting One Machine')
       try {
-        const Machine = await this.getOneMachineFromUnitUseCase.run({machineId})
+        const machine = await this.getOneMachineFromUnitUseCase.run({unitId, machineId})
 
-        return {data: Machine, status: 200}
+        return {data: machine, status: 200}
       } catch(err) {
         this.debug('Error getting Machine', err)
         return errorHandler(err)
@@ -54,11 +54,11 @@ export class MachineHttpController implements MachineController<Promise<HttpResp
       }
     }
 
-    async updateMachine(id: string, data: Partial<MachineDto>): Promise<HttpResponse> {
+    async updateMachine(unitId: string, id: string, data: Partial<MachineDto>): Promise<HttpResponse> {
       this.debug('Updating One Machine')
       try {
 
-        const machine = await this.updateMachineFromUnitUseCase.run({id, data})
+        const machine = await this.updateMachineFromUnitUseCase.run({unitId, id, data})
 
         return {data: machine, status: 200}
       } catch(err) {

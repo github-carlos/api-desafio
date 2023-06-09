@@ -14,29 +14,29 @@ export class MachineRepositoryMongoDb implements MachineRepository {
     this.debug = debug('server::' + MachineRepositoryMongoDb.name)
   }
 
-  async save(machine: Machine): Promise<void> {
+  async save(machine: Machine): Promise<Machine> {
     this.debug('Saving model', machine)
     try {
-      // TODO: add machine id to unit document
       const savedMachine = await this.model.create(machine)
-      await this.companyModel.findOneAndUpdate({ 'units.id': machine.unitId }, { $push: { 'units.$.machines': savedMachine._id } })
-      this.debug('Saved')
+      await this.companyModel.findOneAndUpdate({ 'units._id': machine.unitId }, { $push: { 'units.$.machines': savedMachine._id } })
+      this.debug('Saved', savedMachine)
+      return this.toMachineEntity({...savedMachine.toJSON(), unitId: machine.unitId})
     } catch (err) {
       this.debug('Error saving model', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
 
-  async getOne(id: string): Promise<Machine> {
+  async getOne(unitId: string, id: string): Promise<Machine> {
     this.debug('Getting model', id)
     try {
-      const machine = await this.model.findOne({ id })
+      const machine = await this.model.findById(id)
 
       if (!machine) {
         return null
       }
 
-      return this.toMachineEntity(machine.toJSON())
+      return this.toMachineEntity({...machine.toJSON(), unitId})
     } catch (err) {
       this.debug('Error getting model', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
@@ -46,14 +46,16 @@ export class MachineRepositoryMongoDb implements MachineRepository {
   async getAll(unitId: string): Promise<Machine[]> {
     this.debug('Getting all Machines')
     try {
-      // TODO: tipar corretamente
-      const machines: any = await this.companyModel
-        .findOne({ 'units.id': unitId })
-        .populate('machines').select('machines')
+      const company: any = await this.companyModel
+        .findOne({ 'units._id': unitId }, {"units.$": 1})
+        .populate({path: 'units.machines', model: 'Machine'})
+
+      this.debug('Found Company', company)
+      const machines = company.units[0].machines
 
       this.debug('Found Machines', machines)
 
-      return machines.map((Machine) => this.toMachineEntity(Machine.toJSON()))
+      return machines.map((machine) => this.toMachineEntity({...machine.toJSON(), unitId}))
     } catch (err) {
       this.debug('Error getting all companies', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
@@ -62,27 +64,27 @@ export class MachineRepositoryMongoDb implements MachineRepository {
   async delete(id: string): Promise<boolean> {
     this.debug('Deleting Machine')
     try {
-      const deleted = await this.model.deleteOne({ id })
+      const deleted = await this.model.deleteOne({ _id: id })
       return deleted.deletedCount > 0
     } catch (err) {
       this.debug('Error deleting Machine', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
-  async update(id: string, data: Partial<Machine>): Promise<Machine> {
+  async update(unitId: string, id: string, data: Partial<Machine>): Promise<Machine> {
     this.debug('Updating Machine')
     try {
-      const updatedData = await this.model.findOneAndUpdate({ id }, data)
-      return this.toMachineEntity(updatedData.toJSON())
+      const updatedData = await this.model.findByIdAndUpdate(id, data, { new: true })
+      return this.toMachineEntity({...updatedData.toJSON(), unitId})
     } catch (err) {
       this.debug('Error updating Machine data', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
     }
   }
 
-  private toMachineEntity(machineJSON: Pick<Machine, keyof Machine>): Machine {
+  private toMachineEntity(machineJSON: Pick<Machine, keyof Machine> & {_id: string}): Machine {
     return new Machine({
-      id: machineJSON.id,
+      id: machineJSON._id,
       name: machineJSON.name,
       model: new MachineModel(machineJSON.model.name, machineJSON.model.description),
       description: machineJSON.description,

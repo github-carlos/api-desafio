@@ -21,7 +21,7 @@ export class RemoveMachineFromUnitUseCase implements UseCase<RemoveMachineFromUn
   async run(input: RemoveMachineFromUnitUseCaseInput): Promise<boolean> {
     this.debug('START', input)
     
-    const machine = await this.machineRepository.getOne(input.machineId)
+    const machine = await this.machineRepository.getOne(input.unitId, input.machineId)
 
     if (!machine) {
       throw new BusinessErrors.UnitErrors.MachineNotFoundError()

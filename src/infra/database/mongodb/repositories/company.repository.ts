@@ -12,11 +12,12 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
     this.debug = debug('server::' +CompanyRepositoryMongoDb.name)
   }
 
-  async save(company: Company): Promise<void> {
+  async save(company: Company): Promise<Company> {
     this.debug('Saving model', company)
     try {
-      await this.model.create(company)
+      const savedCompany = await this.model.create(company)
       this.debug('Saved')
+      return this.toCompanyEntity(savedCompany.toJSON())
     } catch(err) {
       this.debug('Error saving model', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
@@ -26,7 +27,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
   async getOne(id: string): Promise<Company> {
     this.debug('Getting model', id)
     try {
-      const company = await this.model.findOne({id})
+      const company = await this.model.findById(id)
 
       if (!company) {
         return null
@@ -53,7 +54,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
   async delete(id: string): Promise<boolean> {
     this.debug('Deleting company')
     try {
-      const deleted = await this.model.deleteOne({id})
+      const deleted = await this.model.deleteOne({_id: id})
       return deleted.deletedCount > 0
     } catch(err) {
       this.debug('Error deleting company', err)
@@ -63,7 +64,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
   async update(id: string, data: Partial<Company>): Promise<Company> {
     this.debug('Updating Company')
     try {
-      const updatedData = await this.model.findOneAndUpdate({id}, data, { new: true })
+      const updatedData = await this.model.findByIdAndUpdate(id, data, { new: true })
       return this.toCompanyEntity(updatedData.toJSON())
     } catch(err) {
       this.debug('Error updating company data', err)
@@ -71,7 +72,7 @@ export class CompanyRepositoryMongoDb implements CompanyRepository {
     }
   }
 
-  private toCompanyEntity(companyJSON: Pick<Company, keyof Company>): Company {
-    return new Company(companyJSON.name, companyJSON.description, companyJSON.id)
+  private toCompanyEntity(companyJSON: Pick<Company, keyof Company> & {_id: string}): Company {
+    return new Company(companyJSON.name, companyJSON.description, companyJSON._id)
   }
 }

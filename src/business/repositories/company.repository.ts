@@ -1,7 +1,7 @@
 import { Company } from "@domain/entities";
 
 export interface CompanyRepository {
-  save(company: Company): Promise<void>
+  save(company: Company): Promise<Company>
   getOne(id: string): Promise<Company | null>
   getAll(): Promise<Array<Company>>
   delete(id: string): Promise<boolean>

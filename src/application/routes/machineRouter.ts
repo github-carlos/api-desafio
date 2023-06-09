@@ -33,15 +33,17 @@ export class MachineRouter {
     })
 
     router.get('/:id', async (req: Request, res: Response) => {
+      const unitId = req.params.unitId
       const id = req.params.id
-      const response = await this.controller.getOneMachine(id)
+      const response = await this.controller.getOneMachine(unitId, id)
       return res.status(response.status).json(response)
     })
 
-    router.put('/:id', async (req: Request, res: Response) => {
+    router.put('/:id', upload.any(), async (req: Request, res: Response) => {
+      const unitId = req.params.unitId
       const id = req.params.id
       const data = req.body
-      const response = await this.controller.updateMachine(id, data)
+      const response = await this.controller.updateMachine(unitId, id, data)
       return res.status(response.status).json(response)
     })
 

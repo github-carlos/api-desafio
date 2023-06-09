@@ -22,9 +22,9 @@ export class CreateUnitUseCase implements UseCase<CreateUnitUseCaseInput, Promis
     this.debug('Started', input)
 
     const newUnit = new Unit(input.companyId, input.address)
-    await this.unitRepository.save(newUnit)
+    const savedUnit = await this.unitRepository.save(newUnit)
 
     this.debug('Finished')
-    return UnitDto.fromEntity(newUnit)
+    return UnitDto.fromEntity(savedUnit)
   }
 }

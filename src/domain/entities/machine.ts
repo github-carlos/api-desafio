@@ -1,4 +1,3 @@
-import { v4 } from "uuid"
 import { MachineModel } from "@domain/valueObjects"
 import { DomainErrors } from "@domain/errors"
 
@@ -38,7 +37,7 @@ export class Machine {
     this.description = params.description
     this.model = params.model
     this.health = params.health ?? 100
-    this.id = params.id ?? v4()
+    this.id = params.id
     this.status = params.status ?? MachineStatusEnum.Stopped
   }
 

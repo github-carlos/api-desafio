@@ -2,7 +2,6 @@ import { Machine, MachineStatusEnum } from "@domain/entities";
 import { Schema, model } from "mongoose";
 
 const machineSchema = new Schema({
-  id: { type: String, required: true, unique: true, index: true },
   name: { type: String, required: true },
   image: String,
   description: String,

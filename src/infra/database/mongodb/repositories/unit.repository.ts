@@ -1,9 +1,10 @@
 import { Debugger, debug } from 'debug'
 import { UnitRepository } from "@business/repositories";
-import { Company, Unit } from "@domain/entities";
+import { Unit } from "@domain/entities";
 import { InfraErrors } from '@infra/errors';
 import { Address } from '@domain/valueObjects';
 import { CompanyMongooseModel } from '../schemas'
+import { Types } from 'mongoose';
 
 export class UnitRepositoryMongoDb implements UnitRepository {
 
@@ -13,11 +14,13 @@ export class UnitRepositoryMongoDb implements UnitRepository {
     this.debug = debug('server::' +UnitRepositoryMongoDb.name)
   }
 
-  async save(unit: Unit): Promise<void> {
+  async save(unit: Unit): Promise<Unit> {
     this.debug('Saving model', Unit)
     try {
-      await this.companyModel.updateOne({id: unit.companyId}, {$push: { units: unit } })
+      const _id = new Types.ObjectId()
+      const saved = await this.companyModel.updateOne({_id: unit.companyId}, {$push: { units: {...unit, _id} } }) as any
       this.debug('Saved')
+      return this.toUnitEntity(unit.companyId, {...unit, _id})
     } catch(err) {
       this.debug('Error saving model', err)
       throw new InfraErrors.DataBaseErrors.OperationError()
@@ -27,14 +30,17 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   async getOne(companyId: string, id: string): Promise<Unit> {
     this.debug('Getting model', id)
     try {
-      const company = (await this.companyModel.findOne({id: companyId, 'units.id': id}) as any)
+      const company = await this.companyModel.findOne({_id: companyId, 'units._id': id}) as any
 
+      this.debug('Found company', company)
       if (!company) {
         return null
       }
 
-      const unit = company.units.find((unit) => unit.id === id)
+      const unit = company.units.find((unit) => unit._id.toString() === id)
       this.debug('Found unit:', unit)
+
+      if (!unit) return null
 
       return this.toUnitEntity(companyId, unit.toJSON())
     } catch(err) {
@@ -46,7 +52,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   async getAll(companyId: string): Promise<Unit[]> {
     this.debug('Getting all Units')
     try {
-      const units = (await this.companyModel.findOne({id: companyId}) as any).units
+      const units = (await this.companyModel.findById(companyId) as any).units
 
       return units.map((unit) => this.toUnitEntity(companyId, unit))
     } catch(err) {
@@ -57,7 +63,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
   async delete(companyId: string, id: string): Promise<boolean> {
     this.debug('Deleting Unit')
     try {
-      const result = await this.companyModel.findOneAndUpdate({id: companyId, 'units.id': id}, { $pull: {units: {id}} }, { new: true })
+      const result = await this.companyModel.findOneAndUpdate({_id: companyId, 'units._id': id}, { $pull: {units: {_id: id}} }, { new: true })
 
       this.debug('Removed Unit', result)
 
@@ -71,13 +77,13 @@ export class UnitRepositoryMongoDb implements UnitRepository {
     this.debug('Updating Unit')
     try {
 
-      const updatedData: any = await this.companyModel.findOneAndUpdate({id: companyId, 'units.id': id}, { $set: { 'units.$': data} }, { new: true })
+      const updatedData: any = await this.companyModel.findOneAndUpdate({_id: companyId, 'units._id': id}, { $set: { 'units.$': {...data, _id: id}} }, { new: true })
 
       this.debug('Updated Data', updatedData)
 
       if (!updatedData) return null
 
-      const unit = updatedData.units.find((unit) => unit.id === id)
+      const unit = updatedData.units.find((unit) => unit._id.toString() === id)
 
       return this.toUnitEntity(companyId, unit.toJSON())
     } catch(err) {
@@ -86,7 +92,7 @@ export class UnitRepositoryMongoDb implements UnitRepository {
     }
   }
 
-  private toUnitEntity(companyId: string, unitJSON: Pick<Unit, keyof Unit>): Unit {
-    return new Unit(companyId, new Address(unitJSON.address.street, unitJSON.address.city, unitJSON.address.state, unitJSON.address.country), unitJSON.id)
+  private toUnitEntity(companyId: string, unitJSON: Pick<Unit, keyof Unit> & {_id: Types.ObjectId}): Unit {
+    return new Unit(companyId, new Address(unitJSON.address.street, unitJSON.address.city, unitJSON.address.state, unitJSON.address.country), unitJSON._id.toString())
   }
 }
